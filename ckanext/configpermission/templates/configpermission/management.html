@@ -1,0 +1,71 @@
+{% extends "page.html" %}
+
+{%- block styles %}
+{{ super() }}
+<style type="text/css">
+    /* show the move cursor as the user moves the mouse over the panel header.*/
+    .draglist .panel-heading {
+        cursor: move;
+    }
+</style>
+{% endblock -%}
+
+{% block subtitle %}{{ _("Permission Management") }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li>{% link_for _('Datasets'), controller='package', action='search' %}</li>
+  <li class="active">{% link_for _('Import Datasets'), controller='ckanext.import_datasets.plugin:ImportDatasetsController', action='search_datasets' %}</li>
+{% endblock %}
+
+{% block primary_content %}
+  {% block primary_content_inner %}
+  <script>
+    $(document).ready(function() {
+        jQuery(function($) {
+          var panelList = $('#roleList');
+
+          panelList.sortable({
+              // Only make the .panel-heading child elements support dragging.
+              // Omit this to make then entire <li>...</li> draggable.
+              handle: '.panel-heading',
+              update: function() {
+                  $('.panel', panelList).each(function(index, elem) {
+                       var $listItem = $(elem),
+                           newIndex = $listItem.index();
+
+                       // Persist the new indices.
+                });
+             }
+          });
+      });
+    });
+
+  </script>
+    <div id="roleblock">
+      <h1>Roles</h1>
+
+      <ul class="list-unstyled draglist" id="roleList">
+        {% for role in roles %}
+          <li>
+            <div class="panel-heading">{{role.name}}</div>
+            <div class="panel-body">Content ...</div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <h1>Models</h1>
+
+    <table>
+      <tbody>
+        {% for model in models %}
+          <tr>
+            <td>{{model.name}}</td>
+            <td>{{model.id}}</td>
+            <td>{{model.min_role}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endblock %}
+{% endblock %}

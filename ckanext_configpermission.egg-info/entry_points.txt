@@ -1,0 +1,9 @@
+
+        [ckan.plugins]
+            configpermission = ckanext.configpermission.plugin:ConfigpermissionPlugin
+        [babel.extractors]
+            ckan = ckan.lib.extract:extract_ckan
+        [paste.paster_command]
+            init = ckanext.configpermission.paster:InitCommand
+            defaultdata = ckanext.configpermission.paster:CreateDefaultDataCommand
+    
