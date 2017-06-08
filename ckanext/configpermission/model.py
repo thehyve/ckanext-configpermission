@@ -64,6 +64,8 @@ class AuthRole(AuthNamedBase, Base):
     rank = Column(types.INTEGER, autoincrement=False, unique=True)
     org_member = Column(types.Boolean, default=False)
     is_registered = Column(types.BOOLEAN, default=True)
+    editable = Column(types.BOOLEAN, default=False)
+    display_name = Column(types.STRINGTYPE, unique=True)
 
     def __repr__(self):
         return "AuthRole(id={}, name={}, rank={}, org_member={})".format(self.id, self.name, self.rank, self.org_member)

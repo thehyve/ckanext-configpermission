@@ -2,12 +2,9 @@
 
 {%- block styles %}
 {{ super() }}
-<style type="text/css">
-    /* show the move cursor as the user moves the mouse over the panel header.*/
-    .draglist .panel-heading {
-        cursor: move;
-    }
-</style>
+{% resource 'configpermission/css/base.css' %}
+{% resource 'configpermission/js/tableManager.js' %}
+{% resource 'configpermission/js/jquery_ui.js' %}
 {% endblock -%}
 
 {% block subtitle %}{{ _("Permission Management") }}{% endblock %}
@@ -19,53 +16,39 @@
 
 {% block primary_content %}
   {% block primary_content_inner %}
-  <script>
-    $(document).ready(function() {
-        jQuery(function($) {
-          var panelList = $('#roleList');
 
-          panelList.sortable({
-              // Only make the .panel-heading child elements support dragging.
-              // Omit this to make then entire <li>...</li> draggable.
-              handle: '.panel-heading',
-              update: function() {
-                  $('.panel', panelList).each(function(index, elem) {
-                       var $listItem = $(elem),
-                           newIndex = $listItem.index();
+    <div id="roleblock" class="sort-block">
+        <h1>Roles</h1>
 
-                       // Persist the new indices.
-                });
-             }
-          });
-      });
-    });
-
-  </script>
-    <div id="roleblock">
-      <h1>Roles</h1>
-
-      <ul class="list-unstyled draglist" id="roleList">
-        {% for role in roles %}
-          <li>
-            <div class="panel-heading">{{role.name}}</div>
-            <div class="panel-body">Content ...</div>
-          </li>
-        {% endfor %}
-      </ul>
+        <table class="table" id="role-table">
+            <tbody class="ui-sortable">
+            {% for role in roles %}
+                <tr class="{% if role.editable %}sortable{% else %}non-sortable{% endif %}">
+                    <td class="name-td">{{role.display_name}}</td>
+                    <td style="display:none">{{role.rank}}</td>
+                    <td class="right-button"><button class="btn btn-danger btn-delete"><i class="icon-remove"></i></button></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <form class="form-inline" id="role-form">
+            <input type="text" class="input-medium" id="new-role-input" placeholder="Add Role...">
+            <button type="submit" class="btn">Add</button>
+        </form>
     </div>
 
-    <h1>Models</h1>
+    <!--<h1>Models</h1>-->
 
-    <table>
-      <tbody>
-        {% for model in models %}
-          <tr>
-            <td>{{model.name}}</td>
-            <td>{{model.id}}</td>
-            <td>{{model.min_role}}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <!--<table>-->
+      <!--<tbody>-->
+        <!--{% for model in models %}-->
+          <!--<tr>-->
+            <!--<td>{{model.name}}</td>-->
+            <!--<td>{{model.id}}</td>-->
+            <!--<td>{{model.min_role}}</td>-->
+          <!--</tr>-->
+        <!--{% endfor %}-->
+      <!--</tbody>-->
+    <!--</table>-->
   {% endblock %}
 {% endblock %}

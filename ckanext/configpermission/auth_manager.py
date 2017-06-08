@@ -21,11 +21,12 @@ class AuthManager(object):
             name = permission['name']
             role = permission['role']
 
-            setattr(self, name, self.make_access_func(name))
+            setattr(self, name, self._make_access_func(name))
             if not role['is_registered']:
                 setattr(getattr(self, name), 'auth_allow_anonymous_access', True)
 
-    def make_access_func(self, name):
+    def _make_access_func(self, name):
+        # Needs to be it's own function to give every function it's own scope (so name gets passed correctly)
         return lambda context, data_dict: self.check_access(context, data_dict, action=name)
 
     def check_access(self, context, data_dict, action=None):

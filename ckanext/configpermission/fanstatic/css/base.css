@@ -1,0 +1,18 @@
+.ui-sortable .sortable {
+    cursor:pointer;
+}
+.ui-sortable .sortable:hover {
+    background:rgba(244,251,17,0.45);
+}
+
+.ui-sortable .non-sortable {
+    background: rgba(100, 100, 110, 0.5);
+}
+
+.sort-block {
+    max-width: 250px;
+}
+
+.right-button button {
+    float: right;
+}

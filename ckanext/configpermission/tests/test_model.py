@@ -71,9 +71,7 @@ def test_AuthRoleAuthModel():
     assert model.AuthMember.by_group_and_user_id(group_id=org1.id, user_id=user1.id) is None
 
     all = set([x.name for x in model.AuthModel.all()])
-
-    assert all == {u'package_show', u'resource_create', u'group_create', 'test_model2',
-                   u'resource_show', u'member_create', u'resource_update'}
+    assert all == {u'package_show', u'group_create', 'test_model2', u'member_create', u'resource_update'}
 
     # Cleanup
     model.AuthModel.delete('test_model')
