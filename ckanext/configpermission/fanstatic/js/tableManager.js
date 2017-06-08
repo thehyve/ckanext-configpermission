@@ -67,7 +67,7 @@ function submit_table(tableID) {
 
     $.ajax({
         'url': 'update_roles',
-        'data': JSON.stringify(table_data),
+        'data': {'data': JSON.stringify(table_data)},
         'dataType': 'json',
         'error': function(error){console.log(error)},
         'method': 'POST',
