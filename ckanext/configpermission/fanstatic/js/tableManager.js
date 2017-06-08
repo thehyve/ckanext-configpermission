@@ -1,4 +1,4 @@
-table_row_default = '<tr class="sortable"> <td class="name-td">ROLE_NAME_PLACEHOLDER</td><td style="display:none">-1</td><td class="right-button"><button class="btn btn-danger btn-delete"><i class="icon-remove"></i></button></td></tr>'
+table_row_default = '<tr class="sortable"><td class="db_name">not_set</td><td class="name-td">ROLE_NAME_PLACEHOLDER</td><td class="rank">-1</td><td class="right-button"><button class="btn btn-danger btn-delete"><i class="icon-remove"></i></button></td></tr>'
 $(document).ready(function() {
     sortable_roles()
 
@@ -18,7 +18,7 @@ $(document).ready(function() {
         r = confirm('Delete role '+ $('.name-td', row)[0].innerText);
         if(r) {
             row.remove();
-            renumber_table(tableID);
+            submit_table(tableID);
         }
     });
 });
@@ -36,18 +36,41 @@ var fixHelperModified = function(e, tr) {
 
 //Make role table sortable
 function sortable_roles(){
-
-    $("#role-table tbody").sortable({
+    var table_name = "#role-table"
+    $(table_name + " tbody").sortable({
         helper: fixHelperModified,
-        stop: function(event,ui) {renumber_table('#role-table')},
+        stop: function(event,ui) {submit_table(table_name)},
         items: $('#role-table .sortable'),
     }).disableSelection();
 };
 
-//Renumber table rows
-function renumber_table(tableID) {
+//Rerank table rows
+function rerank_table(tableID) {
+    count = $(tableID + ' tr').length + 1;
     $(tableID + " tr").each(function() {
-        count = $(this).parent().children().index($(this)) + 1;
-        $(this).find('.priority').html(count);
+        count = count - 1;
+        $(this).find('.rank').html(count);
     });
+}
+
+function submit_table(tableID) {
+    rerank_table(tableID);
+    table_data = []
+    $(tableID + " tr").each(function() {
+        var data = {
+            'rank': $(this).find('.rank').html(),
+            'display_name': $(this).find('.name-td').html(),
+            'name': $(this).find('.db_name').html(),
+        }
+        table_data.push(data)
+    });
+
+    $.ajax({
+        'url': 'update_roles',
+        'data': JSON.stringify(table_data),
+        'dataType': 'json',
+        'error': function(error){console.log(error)},
+        'method': 'POST',
+    })
+    console.log(table_data)
 }

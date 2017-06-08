@@ -25,7 +25,8 @@
             {% for role in roles %}
                 <tr class="{% if role.editable %}sortable{% else %}non-sortable{% endif %}">
                     <td class="name-td">{{role.display_name}}</td>
-                    <td style="display:none">{{role.rank}}</td>
+                    <td class="db_name">{{role.name}}</td>
+                    <td class="rank">{{role.rank}}</td>
                     {% if role.editable %}
                         <td class="right-button">
                             <button class="btn btn-danger btn-delete">

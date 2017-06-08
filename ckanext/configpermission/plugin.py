@@ -8,6 +8,8 @@ permissions = [{'name': 'group_create', 'role': default_roles.SYSADMIN}]
 
 controller_name = 'ckanext.configpermission.controller:PermissionController'
 controller_view_action = 'management_view'
+controller_update_roles_action = 'update_roles'
+
 
 class ConfigpermissionPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
@@ -36,6 +38,9 @@ class ConfigpermissionPlugin(plugins.SingletonPlugin):
         controller = controller_name
 
         m.connect('management_view', '/permissions/', action=controller_view_action,
+                  controller=controller)
+
+        m.connect('roles_update', '/permissions/update_roles', action=controller_update_roles_action,
                   controller=controller)
 
         return m
