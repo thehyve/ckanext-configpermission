@@ -61,7 +61,7 @@ class AuthRole(AuthNamedBase, Base):
     """
     __tablename__ = ROLE_TABLE_NAME
 
-    rank = Column(types.INTEGER, autoincrement=False, unique=True)
+    rank = Column(types.INTEGER, autoincrement=False)
     org_member = Column(types.Boolean, default=False)
     is_registered = Column(types.BOOLEAN, default=True)
     editable = Column(types.BOOLEAN, default=False)

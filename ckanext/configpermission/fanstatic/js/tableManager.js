@@ -9,6 +9,7 @@ $(document).ready(function() {
 
         $('#role-table tr:last').after(table_row_default.replace('ROLE_NAME_PLACEHOLDER', new_role))
         sortable_roles()
+        submit_table('#role-form')
     });
 
     //Delete button in table rows

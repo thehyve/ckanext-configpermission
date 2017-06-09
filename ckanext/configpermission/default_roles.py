@@ -1,4 +1,4 @@
-SYSADMIN = {'display_name': 'Sysadmin', 'name': 'sysadmin', 'rank': 10, 'org_member': True, 'is_registered': True, 'editable': False}
+SYSADMIN = {'display_name': 'Sysadmin', 'name': 'sysadmin', 'rank': 100000, 'org_member': True, 'is_registered': True, 'editable': False}
 EDITOR   = {'display_name': 'Org Editor', 'name': 'editor', 'rank': 5, 'org_member': True, 'is_registered': True, 'editable': True,}
 MEMBER   = {'display_name': 'Org Member', 'name': 'member', 'rank': 4, 'org_member': True, 'is_registered': True, 'editable': True,}
 ADMIN    = {'display_name': 'Org Admin', 'name': 'admin', 'rank': 6, 'org_member': True, 'is_registered': True, 'editable': True,}
