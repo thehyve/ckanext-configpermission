@@ -9,8 +9,16 @@
     background: rgba(100, 100, 110, 0.5);
 }
 
-.sort-block {
+.role-div {
     max-width: 250px;
+}
+
+.auth-div {
+    max-width: 450px;
+}
+
+.role-tr {
+    width: 250px;
 }
 
 .rank {
@@ -19,6 +27,14 @@
 
 .db_name {
     display:none;
+}
+
+.name-td {
+    width: 109px;
+}
+
+.right-button {
+    width: 141px;
 }
 
 .right-button button {

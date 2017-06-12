@@ -17,25 +17,23 @@
 {% block primary_content %}
   {% block primary_content_inner %}
 
-    <div id="roleblock" class="sort-block">
+    <div id="roleblock" class="role-div">
         <h1>Roles</h1>
 
         <table class="table" id="role-table">
             <tbody class="ui-sortable">
             {% for role in roles %}
-                <tr class="{% if role.editable %}sortable{% else %}non-sortable{% endif %}">
+                <tr style="min-width:250px" class="{% if role.editable %}sortable{% else %}non-sortable{% endif %}">
                     <td class="name-td">{{role.display_name}}</td>
                     <td class="db_name">{{role.name}}</td>
                     <td class="rank">{{role.rank}}</td>
+                    <td class="right-button">
                     {% if role.editable %}
-                        <td class="right-button">
-                            <button class="btn btn-danger btn-delete">
-                                <i class="icon-remove"></i>
-                            </button>
-                        </td>
-                    {% else %}
-                        <td></td>
+                        <button class="btn btn-danger btn-delete">
+                            <i class="icon-remove"></i>
+                        </button>
                     {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -46,18 +44,20 @@
         </form>
     </div>
 
-    <!--<h1>Models</h1>-->
+    <div id="modelblock" class="auth-div">
+        <h1>Models</h1>
 
-    <!--<table>-->
-      <!--<tbody>-->
-        <!--{% for model in models %}-->
-          <!--<tr>-->
-            <!--<td>{{model.name}}</td>-->
-            <!--<td>{{model.id}}</td>-->
-            <!--<td>{{model.min_role}}</td>-->
-          <!--</tr>-->
-        <!--{% endfor %}-->
-      <!--</tbody>-->
-    <!--</table>-->
+        <table class="table">
+          <tbody>
+            {% for model in models %}
+              <tr>
+                <td>{{model.name}}</td>
+                <td>{{model.id}}</td>
+                <td>{{model.min_role.name}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </div>
   {% endblock %}
 {% endblock %}
