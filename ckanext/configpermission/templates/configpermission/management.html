@@ -1,63 +1,74 @@
 {% extends "page.html" %}
 
 {%- block styles %}
-{{ super() }}
-{% resource 'configpermission/css/base.css' %}
-{% resource 'configpermission/js/tableManager.js' %}
-{% resource 'configpermission/js/jquery_ui.js' %}
+    {{ super() }}
+    {% resource 'configpermission/css/base.css' %}
+    {% resource 'configpermission/css/bootstrap-select-min.css' %}
+
+    {% resource 'configpermission/js/tableManager.js' %}
+    {% resource 'configpermission/js/jquery_ui.js' %}
+    {% resource 'configpermission/js/bootstrap-select-min.js' %}
 {% endblock -%}
 
 {% block subtitle %}{{ _("Permission Management") }}{% endblock %}
 
 {% block breadcrumb_content %}
-  <li>{% link_for _('Datasets'), controller='package', action='search' %}</li>
-  <li class="active">{% link_for _('Import Datasets'), controller='ckanext.import_datasets.plugin:ImportDatasetsController', action='search_datasets' %}</li>
+    <li class="active">{% link_for _('Permissions'),
+        controller='ckanext.configpermission.controller:PermissionController', action='management_view' %}
+    </li>
 {% endblock %}
 
 {% block primary_content %}
-  {% block primary_content_inner %}
-
-    <div id="roleblock" class="role-div">
-        <h1>Roles</h1>
-
-        <table class="table" id="role-table">
-            <tbody class="ui-sortable">
-            {% for role in roles %}
+    {% block primary_content_inner %}
+        <div id="roleblock" class="role-div">
+            <h1>Roles</h1>
+            <table class="table" id="role-table">
+                <tbody class="ui-sortable">
+                {% for role in roles %}
                 <tr style="min-width:250px" class="{% if role.editable %}sortable{% else %}non-sortable{% endif %}">
                     <td class="name-td">{{role.display_name}}</td>
                     <td class="db_name">{{role.name}}</td>
                     <td class="rank">{{role.rank}}</td>
                     <td class="right-button">
-                    {% if role.editable %}
+                        {% if role.editable %}
                         <button class="btn btn-danger btn-delete">
                             <i class="icon-remove"></i>
                         </button>
-                    {% endif %}
+                        {% endif %}
                     </td>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <form class="form-inline" id="role-form">
-            <input type="text" class="input-medium" id="new-role-input" placeholder="Add Role...">
-            <button type="submit" class="btn">Add</button>
-        </form>
-    </div>
-
-    <div id="modelblock" class="auth-div">
-        <h1>Models</h1>
-
-        <table class="table">
-          <tbody>
-            {% for model in models %}
-              <tr>
-                <td>{{model.name}}</td>
-                <td>{{model.id}}</td>
-                <td>{{model.min_role.name}}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-    </div>
-  {% endblock %}
+                {% endfor %}
+                </tbody>
+            </table>
+            <form class="form-inline" id="role-form">
+                <input type="text" class="input-medium" id="new-role-input" placeholder="Add Role...">
+                <button type="submit" class="btn">Add</button>
+            </form>
+        </div>
+        <div id="modelblock" class="auth-div">
+            <h1>Models</h1>
+            <table class="table">
+                <tbody>
+                    {% for model in models %}
+                        <tr>
+                            <td>{{model.name}}</td>
+                            <td>
+                                <select class="selectpicker">
+                                    {% for role in roles %}
+                                        {% if role.id == model.min_role.id %}
+                                            <option  selected="selected">
+                                        {% else %}
+                                            <option>
+                                        {% endif %}
+                                        {{role.name}}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
 {% endblock %}
