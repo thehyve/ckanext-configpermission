@@ -28,7 +28,7 @@ class PermissionController(BaseController):
         self.check_sysadmin()
         roles = AuthRole.all()
         roles.sort(key=lambda x: x.rank, reverse=True)
-        return render("configpermission/management.html",
+        return render("configpermission/configpermission_management.html",
                       extra_vars={'models': AuthModel.all(), 'roles': roles})
 
     def update_roles(self):

@@ -12,7 +12,7 @@ class InitCommand(CkanCommand):
 
     def command(self):
         self._load_config()
-        from .model import create_tables
+        from ckanext.configpermission.model import create_tables
         create_tables()
 
 
@@ -27,6 +27,6 @@ class CreateDefaultDataCommand(CkanCommand):
 
     def command(self):
         self._load_config()
-        from .model import create_default_data
-        from .plugin import permissions
-        create_default_data(permissions=permissions)
+        from ckanext.configpermission.model import create_default_data
+        from ckanext.configpermission.default_permissions import default_permissions
+        create_default_data(permissions=default_permissions)

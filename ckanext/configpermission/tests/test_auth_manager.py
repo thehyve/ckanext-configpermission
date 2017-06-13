@@ -31,8 +31,8 @@ class TestAuthManager(unittest.TestCase):
         # Test code should use CKAN's plugins.load() function to load plugins
         # to be tested.
         # Use the testpermissions instead of the default
-        from ckanext.configpermission import plugin
-        plugin.permissions = permissions
+        from ckanext.configpermission import default_permissions
+        default_permissions.default_permissions = permissions
         ckan.plugins.load('configpermission')
 
     def teardown(self):
