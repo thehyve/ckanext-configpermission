@@ -1,16 +1,31 @@
-from ckan.lib.base import BaseController, render
-from ckanext.configpermission.model import AuthModel, AuthRole
-from ckan.common import request, _
-from ckan import model as ckan_model
-from ckan.lib.base import abort
-from ckanext.configpermission import model
 import json
 import re
+
+from ckan.lib.base import BaseController, render, abort
+from ckan.common import request, _
+from ckan import model as ckan_model
+
+from ckanext.configpermission import model
+from ckanext.configpermission.model import AuthModel, AuthRole
 
 
 class PermissionController(BaseController):
 
+    def check_sysadmin(self):
+        """
+        Checks if a user is a sysadmin, throws 404 error if not
+        :return:
+        """
+        user_name = request.remote_user
+
+        if user_name is None:
+            return abort(404, _('No user logged in'))
+        user = ckan_model.User.get(user_name)
+        if user is None or not user.sysadmin:
+            return abort(404, _('Only sysadmin can do this'))
+
     def management_view(self):
+        self.check_sysadmin()
         roles = AuthRole.all()
         roles.sort(key=lambda x: x.rank, reverse=True)
         return render("configpermission/management.html",
@@ -21,14 +36,7 @@ class PermissionController(BaseController):
            @param role_data the role data to be updated
         """
         roles = json.loads(request.POST['data'])
-        user_name = request.remote_user
-
-        if user_name is None:
-            return abort(404, _('No user found'))
-        user = ckan_model.User.get(user_name)
-        if user is None or not user.sysadmin:
-            return abort(404, _('Only sysadmin may do this'))
-
+        self.check_sysadmin()
         new_roles = [x['name'] for x in roles]
 
         for role in model.AuthRole.all():
@@ -56,6 +64,16 @@ class PermissionController(BaseController):
 
         return {}
 
+    def auth_update(self):
+        self.check_sysadmin()
+        for auth_model, auth_role in request.POST.items():
+            auth = model.AuthModel.get(name=auth_model)
+            role = model.AuthRole.get(name=auth_role)
+
+            auth.min_role = role
+            auth.save()
+        return
+
 
 def clean_str(string):
     """
@@ -75,4 +93,5 @@ def clean_str(string):
     string = re.sub(r"\)", " \) ", string)
     string = re.sub(r"\?", " \? ", string)
     string = re.sub(r"\s{2,}", " ", string)
+    string = re.sub(r" ", "_", string)
     return string.strip().lower()

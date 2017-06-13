@@ -9,7 +9,7 @@ $(document).ready(function() {
 
         $('#role-table tr:last').after(table_row_default.replace('ROLE_NAME_PLACEHOLDER', new_role))
         sortable_roles()
-        submit_table('#role-form')
+        submit_roles('#role-form')
     });
 
     //Delete button in table rows
@@ -19,9 +19,14 @@ $(document).ready(function() {
         r = confirm('Delete role '+ $('.name-td', row)[0].innerText);
         if(r) {
             row.remove();
-            submit_table(tableID);
+            submit_roles(tableID);
         }
     });
+
+    // Listen to changes in the AuthModels and submit them
+    $('.selectpicker').on('changed.bs.select', function(e){
+        submit_auth(this.id);
+    })
 });
 
 //Helper function to keep table row from collapsing when being sorted
@@ -40,7 +45,7 @@ function sortable_roles(){
     var table_name = "#role-table"
     $(table_name + " tbody").sortable({
         helper: fixHelperModified,
-        stop: function(event,ui) {submit_table(table_name)},
+        stop: function(event,ui) {submit_roles(table_name)},
         items: $('#role-table .sortable'),
     }).disableSelection();
 };
@@ -54,7 +59,8 @@ function rerank_table(tableID) {
     });
 }
 
-function submit_table(tableID) {
+//Send table data to backend after change
+function submit_roles(tableID) {
     rerank_table(tableID);
     table_data = []
     $(tableID + " tr").each(function() {
@@ -74,4 +80,16 @@ function submit_table(tableID) {
         'method': 'POST',
     })
     console.log(table_data)
+}
+
+function submit_auth(authID) {
+    var data = {}
+    data[authID] = $('#'+authID).val()
+    $.ajax({
+        'url': 'auth_update',
+        'data': data,
+        'dataType': 'json',
+        'error': function(error){console.log(error)},
+        'method': 'POST',
+    });
 }

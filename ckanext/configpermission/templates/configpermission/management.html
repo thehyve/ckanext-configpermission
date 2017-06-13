@@ -53,14 +53,14 @@
                         <tr>
                             <td>{{model.name}}</td>
                             <td>
-                                <select class="selectpicker">
+                                <select class="selectpicker" id="{{model.name}}">
                                     {% for role in roles %}
                                         {% if role.id == model.min_role.id %}
-                                            <option  selected="selected">
+                                            <option selected="selected" value="{{role.name}}">
                                         {% else %}
-                                            <option>
+                                            <option value="{{role.name}}">
                                         {% endif %}
-                                        {{role.name}}
+                                        {{role.display_name}}
                                         </option>
                                     {% endfor %}
                                 </select>
