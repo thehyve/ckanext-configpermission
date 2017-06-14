@@ -28,12 +28,16 @@ class PermissionController(BaseController):
         self.check_sysadmin()
         roles = AuthRole.all()
         roles.sort(key=lambda x: x.rank, reverse=True)
+
+        models = AuthModel.all()
+        models.sort(key=lambda x: x.name)
         return render("configpermission/configpermission_management.html",
-                      extra_vars={'models': AuthModel.all(), 'roles': roles})
+                      extra_vars={'models': models, 'roles': roles})
 
     def update_roles(self):
-        """PUT /users/id: Update an existing item.
-           @param role_data the role data to be updated
+        """
+            PUT /users/id: Update an existing item.
+            @param role_data the role data to be updated
         """
         roles = json.loads(request.POST['data'])
         self.check_sysadmin()
@@ -77,8 +81,8 @@ class PermissionController(BaseController):
 
 def clean_str(string):
     """
-    Tokenization/string cleaning
-    Original taken from https://github.com/yoonkim/CNN_sentence/blob/master/process_data.py
+        Tokenization/string cleaning
+        Original taken from https://github.com/yoonkim/CNN_sentence/blob/master/process_data.py
     """
     string = re.sub(r"[^A-Za-z0-9(),!?\'\`]", " ", string)
     string = re.sub(r"\'s", " \'s", string)

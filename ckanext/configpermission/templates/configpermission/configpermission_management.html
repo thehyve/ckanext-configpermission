@@ -46,12 +46,18 @@
             </form>
         </div>
         <div id="modelblock" class="auth-div">
-            <h1>Models</h1>
+            <h1>Access Rules</h1>
             <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Minimal Role Required</th>
+                    </tr>
+                </thead>
                 <tbody>
                     {% for model in models %}
-                        <tr>
-                            <td>{{model.name}}</td>
+                        <tr id="model_{{model.name}}">
+                            <td>{{model.display_name}}</td>
                             <td>
                                 <select class="selectpicker" id="{{model.name}}">
                                     {% for role in roles %}
@@ -60,7 +66,7 @@
                                         {% else %}
                                             <option value="{{role.name}}">
                                         {% endif %}
-                                        {{role.display_name}}
+                                            {{role.display_name}}
                                         </option>
                                     {% endfor %}
                                 </select>

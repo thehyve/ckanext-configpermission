@@ -77,6 +77,7 @@ class AuthModel(AuthNamedBase, Base):
     """
     __tablename__ = AUTH_TABLE_NAME
 
+    display_name = Column(types.STRINGTYPE, nullable=False)
     min_role_id = Column(ForeignKey("{}.id".format(ROLE_TABLE_NAME), onupdate="CASCADE", ondelete="SET NULL"), nullable=True)
     min_role = relationship("AuthRole", order_by="{}.id".format("AuthRole"))
 
@@ -144,4 +145,6 @@ def create_default_data(permissions, roles=default_roles.all_roles, overwrite=Fa
     for permission in permissions:
         auth_model = AuthModel.get(name=permission['name'])
         if auth_model is None:
-            AuthModel.create(name=permission['name'], min_role=auth_roles[permission['role']['name']])
+            AuthModel.create(name=permission['name'],
+                             min_role=auth_roles[permission['role']['name']],
+                             display_name=permission['display_name'])
