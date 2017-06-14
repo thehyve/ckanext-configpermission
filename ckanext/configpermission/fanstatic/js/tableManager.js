@@ -73,7 +73,7 @@ function submit_roles(tableID) {
     });
 
     $.ajax({
-        'url': 'update_roles',
+        'url': 'permissions/update_roles',
         'data': {'data': JSON.stringify(table_data)},
         'dataType': 'json',
         'error': function(error){console.log(error)},
@@ -86,7 +86,7 @@ function submit_auth(authID) {
     var data = {}
     data[authID] = $('#'+authID).val()
     $.ajax({
-        'url': 'auth_update',
+        'url': 'permissions/auth_update',
         'data': data,
         'dataType': 'json',
         'error': function(error){console.log(error)},
