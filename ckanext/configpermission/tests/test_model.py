@@ -100,7 +100,7 @@ class TestAuthManager(unittest.TestCase):
         org1 = ckan_model.Group.get(org1_name)
         model.AuthMember.delete(group_id=org1.id, user_id=user1.id)
         assert model.AuthMember.by_user_id(user_id=user1.id) == []
-        assert model.AuthMember.by_group_id(group_id=org1.id) == []
+        assert len(model.AuthMember.by_group_id(group_id=org1.id)) == 1
 
         model.AuthMember.create(user_id=user1.id, group_id=org1.id, role=auth_role)
         member = model.AuthMember.by_group_and_user_id(group_id=org1.id, user_id=user1.id)

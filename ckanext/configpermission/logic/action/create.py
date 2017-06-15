@@ -10,7 +10,10 @@ _check_access = logic.check_access
 
 
 def member_create(context, data_dict=None):
-    '''Make an object (e.g. a user, dataset or group) a member of a group.
+    '''
+    Function is based on the code from the member_create CKAN function.
+
+    Make an object (e.g. a user, dataset or group) a member of a group.
 
     If the object is already a member of the group then the capacity of the
     membership will be updated.
