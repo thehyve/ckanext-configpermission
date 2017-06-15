@@ -3,6 +3,8 @@ import ckan.plugins.toolkit as toolkit
 
 from ckanext.configpermission.default_permissions import default_permissions
 from ckanext.configpermission.auth_manager import AuthManager
+from ckanext.configpermission.logic.action.create import member_create
+
 
 controller_name = 'ckanext.configpermission.controller:PermissionController'
 controller_view_action = 'management_view'
@@ -14,6 +16,7 @@ class ConfigpermissionPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IAuthFunctions)
     plugins.implements(plugins.IRoutes)
+    plugins.implements(plugins.IActions)
 
     auth_manager = None
 
@@ -49,3 +52,8 @@ class ConfigpermissionPlugin(plugins.SingletonPlugin):
 
     def after_map(self, m):
         return m
+
+    # IActions #
+    def get_actions(self):
+        # Overwrite the CKAN member_create function with our own, so we can hook into member creation.
+        return {'member_create': member_create}

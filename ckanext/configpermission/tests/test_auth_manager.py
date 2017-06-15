@@ -20,7 +20,7 @@ auth_test_org      = 'auth_test_org'
 
 
 class TestAuthManager(unittest.TestCase):
-    '''Tests for the ckanext.example_iauthfunctions.plugin module.
+    '''Tests for the ckanext.configpermission.auth_manager module.
 
     Specifically tests that overriding parent auth functions will cause
     child auth functions to use the overridden version.
