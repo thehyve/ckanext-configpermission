@@ -1,9 +1,12 @@
 import unittest
+import nose
+
 from ckan import model as ckan_model
 from ckan.tests import factories
 import ckan.tests.helpers as helpers
 import ckan
-import nose
+
+from ckanext.configpermission import model
 
 assert_equals = nose.tools.assert_equals
 
@@ -27,6 +30,8 @@ class TestAuthManager(unittest.TestCase):
         # Rebuild CKAN's database after each test method, so that each test
         # method runs with a clean slate.
         ckan_model.repo.rebuild_db()
+        for member in model.AuthMember.all():
+            member.delete(member.group_id, member.user_id)
 
     @classmethod
     def teardown_class(cls):
@@ -57,10 +62,16 @@ class TestAuthManager(unittest.TestCase):
         assert_equals(new_membership['table_id'], user['id'])
         assert_equals(new_membership['capacity'], 'member')
 
+        # Check AuthMember object is created.
+        auth_member = model.AuthMember.by_group_and_user_id(group_id=group['id'], user_id=user['id'])
+        assert auth_member is not None
+        assert auth_member.role.name == 'member'
+
     def test_organization_member_creation(self):
         """
         Based on the tests in CKAN's test_create
         """
+        self.teardown()
         user = factories.User()
         organization = factories.Organization()
 
@@ -75,3 +86,8 @@ class TestAuthManager(unittest.TestCase):
         assert_equals(new_membership['table_name'], 'user')
         assert_equals(new_membership['table_id'], user['id'])
         assert_equals(new_membership['capacity'], 'member')
+
+        # Check AuthMember object is created.
+        auth_member = model.AuthMember.by_group_and_user_id(group_id=organization['id'], user_id=user['id'])
+        assert auth_member is not None
+        assert auth_member.role.name == 'member'

@@ -2,7 +2,7 @@ from ckan import logic
 from ckan.common import _
 import ckan
 import ckan.lib.dictization.model_dictize as model_dictize
-
+from ckanext.configpermission.model import AuthMember, AuthRole
 
 NotFound = logic.NotFound
 _get_or_bust = logic.get_or_bust
@@ -72,5 +72,13 @@ def member_create(context, data_dict=None):
 
     model.Session.add(member)
     model.repo.commit()
+
+    # New code to add AuthMember objects
+    if obj_type == 'user':
+        roles = [x for x in AuthRole.all() if x.org_member]
+        roles.sort(key=lambda x: x.rank)
+        lowest_role = roles[0]
+
+        AuthMember.create(group_id=group.id, user_id=obj_id, role=lowest_role)
 
     return model_dictize.member_dictize(member, context)
