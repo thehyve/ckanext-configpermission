@@ -27,6 +27,7 @@ class CreateDefaultDataCommand(CkanCommand):
 
     def command(self):
         self._load_config()
-        from ckanext.configpermission.model import create_default_data
+        from ckanext.configpermission.model import create_default_data, create_members
         from ckanext.configpermission.default_permissions import default_permissions
         create_default_data(permissions=default_permissions)
+        create_members()

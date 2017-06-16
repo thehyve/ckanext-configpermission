@@ -148,3 +148,22 @@ def create_default_data(permissions, roles=default_roles.all_roles, overwrite=Fa
             AuthModel.create(name=permission['name'],
                              min_role=auth_roles[permission['role']['name']],
                              display_name=permission['display_name'])
+
+
+def create_members():
+    """
+    Create AuthMember objects based on all existing memberships. Assumes create_default_data has been run and all default roles are created already
+    """
+    query = meta.Session.query(model.Member).autoflush(False)
+
+    for member in query.all():
+        if not member.group.is_organization or member.table_name != 'user':
+            continue
+        role = AuthRole.get(member.capacity)
+        group_id = member.group.id
+        user_id = member.table_id
+
+        authmember = AuthMember.by_group_and_user_id(group_id=group_id, user_id=user_id)
+        if authmember is None:
+            AuthMember.create(user_id=user_id, role=role, group_id=group_id)
+
