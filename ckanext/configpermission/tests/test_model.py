@@ -1,9 +1,12 @@
 import unittest
 
+from ckanext.configpermission import default_permissions
 from ckanext.configpermission import model
+
 import ckan
 from ckan.tests import factories
 from ckan import model as ckan_model
+
 model.create_tables()
 
 org1_name = 'configpermission_test_org'
@@ -112,7 +115,9 @@ class TestAuthManager(unittest.TestCase):
         assert model.AuthMember.by_group_and_user_id(group_id=org1.id, user_id=user1.id) is None
 
         all = set([x.name for x in model.AuthModel.all()])
-        assert all == {u'member_create', u'package_show', u'test_model2', u'group_create', u'resource_update'}
+        default = set([x['name'] for x in default_permissions.default_permissions])
+        default.add('test_model2')
+        assert all == default
 
         # Cleanup
         model.AuthModel.delete('test_model')

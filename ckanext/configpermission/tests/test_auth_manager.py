@@ -106,3 +106,11 @@ class TestAuthManager(unittest.TestCase):
         context = {'model': ckan_model, 'user': auth_test_normal, 'group': group}
 
         self.assertRaises(NotAuthorized, check_access, action='member_create', context=context, data_dict={})
+
+    def test_resource_show_anon(self):
+        self.create_test_data()
+        resource = factories.Resource(name='test_resource_1')
+        context = {'model': ckan_model, 'user': '', 'resource': resource['id']}
+
+        # Should have access even without User
+        assert check_access(action='resource_show', context=context, data_dict={})
