@@ -1,2 +1,0 @@
-1. Deal with users viewing themselves (for instance in user_followee_list) / Things they are the owner off.
-2. Overwrite member_roles_list (action/get.py) so it shows new roles.
