@@ -1,10 +1,6 @@
-=============
 ckanext-configpermission
-=============
 
-.. Put a description of your extension here:
-   What does it do? What features does it have?
-   Consider including some screenshots or embedding a video!
+Adds a way for sysadmins to configure CKAN permissions via a web interface and create new organization roles.
 
 
 ------------
