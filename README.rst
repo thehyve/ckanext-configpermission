@@ -77,8 +77,6 @@ To install ckanext-configpermission:
 6. Create default data
    paster --plugin=ckanext-configpermission defaultdata -c /etc/ckan/default/production.ini
 
-7. Select the permissions to be managed in the ckan configuration file. Like so
-   ckan.configpermission.permissions = package_show member_delete group_create resource_update package_show resource_show
 
 ---------------
 Config Settings
@@ -86,9 +84,8 @@ Config Settings
 
 Document any optional config settings here. For example::
 
-    # The minimum number of hours to wait before re-checking a resource
-    # (optional, default: 24).
-    ckanext.configpermission.some_setting = some_default_value
+   # Select the permissions to be managed in the ckan configuration file. Like so
+   ckan.configpermission.permissions = package_show member_delete group_create resource_update package_show resource_show
 
 
 ------------------------
