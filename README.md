@@ -38,14 +38,16 @@ To install ckanext-configpermission:
 
 4. Restart CKAN. For example if you've deployed CKAN with Apache on Ubuntu::
 
-     sudo service apache2 reload
+    sudo service apache2 reload
 
 
 5. Run database init
-   paster --plugin=ckanext-configpermission init -c /etc/ckan/default/production.ini
+
+    paster --plugin=ckanext-configpermission init -c /etc/ckan/default/production.ini
 
 6. Create default data
-   paster --plugin=ckanext-configpermission defaultdata -c /etc/ckan/default/production.ini
+
+    paster --plugin=ckanext-configpermission defaultdata -c /etc/ckan/default/production.ini
 
 
 ---------------
@@ -75,65 +77,4 @@ Running the Tests
 
 To run the tests, do::
 
-    nosetests --nologcapture --with-pylons=test.ini
-
-To run the tests and produce a coverage report, first make sure you have
-coverage installed in your virtualenv (``pip install coverage``) then run::
-
-    nosetests --nologcapture --with-pylons=test.ini --with-coverage --cover-package=ckanext.configpermission --cover-inclusive --cover-erase --cover-tests
-
-
----------------------------------
-Registering ckanext-configpermission on PyPI
----------------------------------
-
-ckanext-configpermission should be availabe on PyPI as
-https://pypi.python.org/pypi/ckanext-configpermission. If that link doesn't work, then
-you can register the project on PyPI for the first time by following these
-steps:
-
-1. Create a source distribution of the project::
-
-     python setup.py sdist
-
-2. Register the project::
-
-     python setup.py register
-
-3. Upload the source distribution to PyPI::
-
-     python setup.py sdist upload
-
-4. Tag the first release of the project on GitHub with the version number from
-   the ``setup.py`` file. For example if the version number in ``setup.py`` is
-   0.0.1 then do::
-
-       git tag 0.0.1
-       git push --tags
-
-
-----------------------------------------
-Releasing a New Version of ckanext-configpermission
-----------------------------------------
-
-ckanext-configpermission is availabe on PyPI as https://pypi.python.org/pypi/ckanext-configpermission.
-To publish a new version to PyPI follow these steps:
-
-1. Update the version number in the ``setup.py`` file.
-   See `PEP 440 <http://legacy.python.org/dev/peps/pep-0440/#public-version-identifiers>`_
-   for how to choose version numbers.
-
-2. Create a source distribution of the new version::
-
-     python setup.py sdist
-
-3. Upload the source distribution to PyPI::
-
-     python setup.py sdist upload
-
-4. Tag the new release of the project on GitHub with the version number from
-   the ``setup.py`` file. For example if the version number in ``setup.py`` is
-   0.0.2 then do::
-
-       git tag 0.0.2
-       git push --tags
+    nosetests --paster=ckanext-configpermission --nologcapture --with-pylons=test.ini -c /etc/ckan/default/production.ini
