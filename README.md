@@ -1,4 +1,6 @@
+------------
 ckanext-configpermission
+------------
 
 Adds a way for sysadmins to configure CKAN permissions via a web interface and create new organization roles.
 
