@@ -77,6 +77,9 @@ To install ckanext-configpermission:
 6. Create default data
    paster --plugin=ckanext-configpermission defaultdata -c /etc/ckan/default/production.ini
 
+7. Select the permissions to be managed in the ckan configuration file. Like so
+   ckan.configpermission.permissions = package_show member_delete group_create resource_update package_show resource_show
+
 ---------------
 Config Settings
 ---------------

@@ -1,7 +1,7 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
-from ckanext.configpermission.default_permissions import default_permissions
+
 from ckanext.configpermission.auth_manager import AuthManager
 from ckanext.configpermission.logic.action.create import member_create
 from ckanext.configpermission.logic.action.get import member_roles_list
@@ -11,6 +11,7 @@ controller_name = 'ckanext.configpermission.controller:PermissionController'
 controller_view_action = 'management_view'
 controller_update_roles_action = 'update_roles'
 controller_auth_update_action = 'auth_update'
+
 
 
 class ConfigpermissionPlugin(plugins.SingletonPlugin):
@@ -29,10 +30,12 @@ class ConfigpermissionPlugin(plugins.SingletonPlugin):
 
     # IAuthFunctions
     def get_auth_functions(self):
+        from ckanext.configpermission.default_permissions import permissions
+
         # Get the default_permissions we're overwriting and return to the main CKAN site
         auth_data = {}
-        self.auth_manager = AuthManager(default_permissions)
-        for permission in [x['name'] for x in default_permissions]:
+        self.auth_manager = AuthManager(permissions)
+        for permission in [x['name'] for x in permissions]:
             auth_data[permission] = getattr(self.auth_manager, permission)
         return auth_data
 

@@ -7,6 +7,7 @@ from ckan import model as ckan_model
 
 from ckanext.configpermission import model
 from ckanext.configpermission.model import AuthModel, AuthRole
+from ckanext.configpermission.default_permissions import permissions
 
 
 class PermissionController(BaseController):
@@ -30,7 +31,10 @@ class PermissionController(BaseController):
         roles.sort(key=lambda x: x.rank, reverse=True)
 
         models = AuthModel.all()
+        # Only show the models selected via the ckan config option.
+        models = [x for x in models if x.name in [y['name'] for y in permissions]]
         models.sort(key=lambda x: x.name)
+
         return render("configpermission/configpermission_management.html",
                       extra_vars={'models': models, 'roles': roles})
 

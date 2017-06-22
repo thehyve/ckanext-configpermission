@@ -1,5 +1,7 @@
 from ckanext.configpermission import default_roles
 
+from pylons import config
+
 default_permissions = [{'display_name': 'Create Group', 'name': 'group_create', 'role': default_roles.SYSADMIN},
                        {'display_name': 'Create Related Items', 'name': 'related_create', 'role': default_roles.REG_USER},
                        {'display_name': 'Show Package', 'name': 'package_show', 'role': default_roles.ANON_USER},
@@ -131,3 +133,13 @@ default_permissions = [{'display_name': 'Create Group', 'name': 'group_create', 
                        {'display_name': 'Create Organization', 'name': 'organization_create', 'role': default_roles.SYSADMIN},
                        {'display_name': 'Show all users', 'name': 'user_list', 'role': default_roles.REG_USER},
                        ]
+
+selected_permissions = config.get('ckan.configpermission.permissions', '*').strip()
+# * means we want to select all permissions
+if selected_permissions == '*':
+    selected_permissions = [x['name'] for x in default_permissions]
+else:
+    # Turn comma separated string into a proper python list.
+    selected_permissions = [x.strip() for x in selected_permissions.split(' ')]
+# Get the permissions we selected.
+permissions = [x for x in default_permissions if x['name'] in selected_permissions]
