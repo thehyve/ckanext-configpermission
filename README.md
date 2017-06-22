@@ -1,33 +1,3 @@
-.. You should enable this project on travis-ci.org and coveralls.io to make
-   these badges work. The necessary Travis and Coverage config files have been
-   generated for you.
-
-.. image:: https://travis-ci.org/thehyve/ckanext-configpermission.svg?branch=master
-    :target: https://travis-ci.org/thehyve/ckanext-configpermission
-
-.. image:: https://coveralls.io/repos/thehyve/ckanext-configpermission/badge.svg
-  :target: https://coveralls.io/r/thehyve/ckanext-configpermission
-
-.. image:: https://pypip.in/download/ckanext-configpermission/badge.svg
-    :target: https://pypi.python.org/pypi//ckanext-configpermission/
-    :alt: Downloads
-
-.. image:: https://pypip.in/version/ckanext-configpermission/badge.svg
-    :target: https://pypi.python.org/pypi/ckanext-configpermission/
-    :alt: Latest Version
-
-.. image:: https://pypip.in/py_versions/ckanext-configpermission/badge.svg
-    :target: https://pypi.python.org/pypi/ckanext-configpermission/
-    :alt: Supported Python versions
-
-.. image:: https://pypip.in/status/ckanext-configpermission/badge.svg
-    :target: https://pypi.python.org/pypi/ckanext-configpermission/
-    :alt: Development Status
-
-.. image:: https://pypip.in/license/ckanext-configpermission/badge.svg
-    :target: https://pypi.python.org/pypi/ckanext-configpermission/
-    :alt: License
-
 =============
 ckanext-configpermission
 =============
@@ -82,10 +52,8 @@ To install ckanext-configpermission:
 Config Settings
 ---------------
 
-Document any optional config settings here. For example::
-
-   # Select the permissions to be managed in the ckan configuration file. Like so
-   ckan.configpermission.permissions = package_show member_delete group_create resource_update package_show resource_show
+Select the permissions to be managed in the ckan configuration file. Like so
+    ckan.configpermission.permissions = package_show member_delete group_create resource_update package_show resource_show
 
 
 ------------------------
