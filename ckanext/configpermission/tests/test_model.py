@@ -1,6 +1,6 @@
 import unittest
 
-from ckanext.configpermission import default_permissions
+from ckanext.configpermission.tests.test_permissions import permissions
 from ckanext.configpermission import model
 
 import ckan
@@ -54,7 +54,7 @@ class TestAuthManager(unittest.TestCase):
 
     def add_test_data(self):
         self.clear_data()
-        ckan_model.repo.rebuild_db()
+        model.create_default_data(permissions=permissions)
         # Creates the data we use in the tests.
         org1 = ckan_model.Group.get(org1_name)
         user1 = ckan_model.User.get(user1_name )
@@ -66,7 +66,6 @@ class TestAuthManager(unittest.TestCase):
 
     def test_AuthRoleAuthModel(self):
         self.add_test_data()
-
         model.AuthRole.delete('test_role')
         assert model.AuthRole.get('test_role') is None
         model.AuthRole.create(name='test_role', rank=1000)
@@ -103,7 +102,7 @@ class TestAuthManager(unittest.TestCase):
         org1 = ckan_model.Group.get(org1_name)
         model.AuthMember.delete(group_id=org1.id, user_id=user1.id)
         assert model.AuthMember.by_user_id(user_id=user1.id) == []
-        assert len(model.AuthMember.by_group_id(group_id=org1.id)) == 1
+        assert len(model.AuthMember.by_group_id(group_id=org1.id)) == 0
 
         model.AuthMember.create(user_id=user1.id, group_id=org1.id, role=auth_role)
         member = model.AuthMember.by_group_and_user_id(group_id=org1.id, user_id=user1.id)
@@ -115,11 +114,7 @@ class TestAuthManager(unittest.TestCase):
         assert model.AuthMember.by_group_and_user_id(group_id=org1.id, user_id=user1.id) is None
 
         all = set([x.name for x in model.AuthModel.all()])
-        default = set([x['name'] for x in default_permissions.default_permissions])
+        default = set([x['name'] for x in permissions])
         default.add('test_model2')
         assert all == default
 
-        # Cleanup
-        model.AuthModel.delete('test_model')
-        model.AuthModel.delete('test_model2')
-        model.AuthRole.delete('test_role')

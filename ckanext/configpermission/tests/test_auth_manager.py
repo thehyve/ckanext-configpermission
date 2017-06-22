@@ -114,3 +114,15 @@ class TestAuthManager(unittest.TestCase):
 
         # Should have access even without User
         assert check_access(action='resource_show', context=context, data_dict={})
+
+    def test_user_followee_list(self):
+        self.create_test_data()
+        test_user = factories.User(name='user_followee_list', sysadmin=False)
+
+        context = {'model': ckan_model, 'user':auth_test_normal}
+
+        # Should not be able to access this if you don't 'own' it
+        self.assertRaises(NotAuthorized, check_access, action='user_followee_list', context=context, data_dict={'id':test_user['id']})
+        # Should be able to access this list if you do 'own' it (it's about you)
+        normal_user = ckan_model.User.get(auth_test_normal)
+        assert check_access(action='user_followee_list', context=context, data_dict={'id': normal_user.id})

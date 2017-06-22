@@ -1,6 +1,7 @@
 from ckanext.configpermission import model as auth_model
 from ckanext.configpermission import default_roles
 
+from ckan import model as ckan_model
 from ckan.logic import auth as logic_auth
 
 from logging import getLogger
@@ -61,9 +62,18 @@ class AuthManager(object):
         elif 'group' in context:
             owner_org = logic_auth.get_group_object(context, data_dict).id
 
-        # If no org set at all, data is visible.
-        if owner_org is None:
+
+        # If no org and no id set at all, data is visible.
+        if owner_org is None and 'id' not in data_dict:
             return allowed
+        elif 'id' in data_dict:
+            # Check if user is owner of the object
+            if 'user' in action:
+                dict_user = ckan_model.User.get(data_dict['id'])
+                if user == dict_user:
+                    return allowed
+                else:
+                    return not_allowed
         else:
             membership = auth_model.AuthMember.by_group_and_user_id(group_id=owner_org, user_id=user.id)
 
