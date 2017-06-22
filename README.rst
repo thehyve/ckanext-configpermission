@@ -74,7 +74,7 @@ To install ckanext-configpermission:
 5. Run database init
    paster --plugin=ckanext-configpermission init -c /etc/ckan/default/production.ini
 
-5. Create default data
+6. Create default data
    paster --plugin=ckanext-configpermission defaultdata -c /etc/ckan/default/production.ini
 
 ---------------

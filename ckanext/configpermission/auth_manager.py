@@ -3,6 +3,7 @@ from ckanext.configpermission import default_roles
 
 from ckan import model as ckan_model
 from ckan.logic import auth as logic_auth
+from ckan.logic.auth import get as auth_get
 
 from logging import getLogger
 log = getLogger(__name__)
@@ -67,13 +68,9 @@ class AuthManager(object):
         if owner_org is None and 'id' not in data_dict:
             return allowed
         elif 'id' in data_dict:
-            # Check if user is owner of the object
-            if 'user' in action:
-                dict_user = ckan_model.User.get(data_dict['id'])
-                if user == dict_user:
-                    return allowed
-                else:
-                    return not_allowed
+            # Use ckan methods to check if user follows this object.
+            if 'followee' in action:
+                return auth_get._followee_list(context, data_dict)
         else:
             membership = auth_model.AuthMember.by_group_and_user_id(group_id=owner_org, user_id=user.id)
 

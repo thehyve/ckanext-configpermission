@@ -126,3 +126,16 @@ class TestAuthManager(unittest.TestCase):
         # Should be able to access this list if you do 'own' it (it's about you)
         normal_user = ckan_model.User.get(auth_test_normal)
         assert check_access(action='user_followee_list', context=context, data_dict={'id': normal_user.id})
+
+    def test_group_followee_list(self):
+        self.create_test_data()
+        test_user = factories.User(name='group_followee_list', sysadmin=False)
+        context = {'model': ckan_model, 'user':auth_test_normal}
+        org = ckan_model.Group.get(auth_test_org)
+
+        # Should not be able to access this if you don't 'own' it
+        self.assertRaises(NotAuthorized, check_access, action='group_followee_list', context=context,
+                          data_dict={'id': test_user['id']})
+        # Should be able to access this list if you do 'own' it (it's about you)
+        normal_user = ckan_model.User.get(auth_test_normal)
+        assert check_access(action='group_followee_list', context=context, data_dict={'id': normal_user.id})
