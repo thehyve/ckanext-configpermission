@@ -41,8 +41,7 @@ ckanext-configpermission
 Requirements
 ------------
 
-For example, you might want to mention here which versions of CKAN this
-extension works with.
+Tested on CKAN 2.5
 
 
 ------------
@@ -74,6 +73,9 @@ To install ckanext-configpermission:
 
 5. Run database init
    paster --plugin=ckanext-configpermission init -c /etc/ckan/default/production.ini
+
+5. Create default data
+   paster --plugin=ckanext-configpermission defaultdata -c /etc/ckan/default/production.ini
 
 ---------------
 Config Settings
