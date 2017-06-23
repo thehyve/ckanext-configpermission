@@ -1,7 +1,6 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
-
 from ckanext.configpermission.auth_manager import AuthManager
 from ckanext.configpermission.logic.action.create import member_create
 from ckanext.configpermission.logic.action.get import member_roles_list
@@ -11,7 +10,6 @@ controller_name = 'ckanext.configpermission.controller:PermissionController'
 controller_view_action = 'management_view'
 controller_update_roles_action = 'update_roles'
 controller_auth_update_action = 'auth_update'
-
 
 
 class ConfigpermissionPlugin(plugins.SingletonPlugin):
@@ -27,6 +25,7 @@ class ConfigpermissionPlugin(plugins.SingletonPlugin):
         toolkit.add_template_directory(config_, 'templates')
         toolkit.add_public_directory(config_, 'public')
         toolkit.add_resource('fanstatic', 'configpermission')
+        toolkit.add_ckan_admin_tab(config_, 'management_view', 'Permissions')
 
     # IAuthFunctions
     def get_auth_functions(self):
