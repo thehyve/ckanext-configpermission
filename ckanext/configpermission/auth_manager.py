@@ -43,6 +43,12 @@ class AuthManager(object):
         :param action:
         :return:
         """
+        # Done like this instead of as default value because python behaves weirdly when you do that.
+        # See: https://python-guide-pt-br.readthedocs.io/en/latest/writing/gotchas/#mutable-default-arguments
+        if data_dict is None:
+            data_dict = {}
+        if context is None:
+            context = {}
         auth = auth_model.AuthModel.get(action)
         user = context.get('auth_user_obj', None)
 
