@@ -82,6 +82,11 @@ def member_create(context, data_dict=None):
         roles.sort(key=lambda x: x.rank)
         lowest_role = roles[0]
 
-        AuthMember.create(group_id=group.id, user_id=obj_id, role=lowest_role)
+        existing_member = AuthMember.by_group_and_user_id(group_id=group.id, user_id=obj.id)
+        if not existing_member:
+            AuthMember.create(group_id=group.id, user_id=obj_id, role=lowest_role)
+        else:
+            existing_member.role = lowest_role
+            existing_member.save()
 
     return model_dictize.member_dictize(member, context)
