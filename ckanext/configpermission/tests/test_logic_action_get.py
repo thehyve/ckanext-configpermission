@@ -32,4 +32,5 @@ class TestAuthManager(unittest.TestCase):
         ckan.plugins.unload('configpermission')
 
     def test_member_role(self):
-        assert set(get.member_roles_list()) == {u'test_role', u'sysadmin', u'editor', u'member', u'admin', u'reg_user', u'anon_user'}
+        roles = get.member_roles_list({}, {})
+        assert set([x['value'] for x in roles]) == {u'test_role', u'sysadmin', u'editor', u'member', u'admin', u'reg_user', u'anon_user'}

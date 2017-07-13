@@ -31,6 +31,23 @@ class AuthManager(object):
         # Needs to be it's own function to give every function it's own scope (so name gets passed correctly)
         return lambda context, data_dict: self.check_access(context, data_dict, action=name)
 
+    def _get_owner_org(self, context, data_dict, action):
+        owner_org = None
+
+        # Check the context so we find the relevant org
+        if 'resource' in context and 'resource' in action:
+            resource = context['resource']
+            owner_org = resource.extras.get('owner_org', None)
+            if owner_org is None:
+                owner_org = resource.package.owner_org
+        elif 'package' in context and 'package' in action:
+            package = context['package']
+            owner_org = package.owner_org
+        elif 'group' in context:
+            owner_org = logic_auth.get_group_object(context, data_dict).id
+
+        return owner_org
+
     def check_access(self, context, data_dict, action=None):
         """
         Method used to see if someone has access. Looks up the rules and roles in the database based on the context and
@@ -58,37 +75,35 @@ class AuthManager(object):
 
         # If anonymous users can access, everyone can.
         if not auth.min_role.is_registered:
+            log.debug('allowed')
             return allowed
 
-        # Check the context so we find the relevant org
-        if 'resource' in context and 'resource' in action:
-            resource = context['resource']
-            owner_org = resource.extras.get('owner_org', None)
-            if owner_org is None:
-                owner_org = resource.package.owner_org
-        elif 'group' in context:
-            owner_org = logic_auth.get_group_object(context, data_dict).id
-
+        owner_org = self._get_owner_org(context, data_dict, action)
 
         # If no org and no id set at all, data is visible.
         if owner_org is None and 'id' not in data_dict:
+            log.debug('allowed')
             return allowed
         elif 'id' in data_dict:
             # Use ckan methods to check if user follows this object.
             if 'followee' in action:
                 return auth_get._followee_list(context, data_dict)
-        else:
-            membership = auth_model.AuthMember.by_group_and_user_id(group_id=owner_org, user_id=user.id)
+
+        membership = auth_model.AuthMember.by_group_and_user_id(group_id=owner_org, user_id=user.id)
 
         # If the user is a member of the org, check if he has the right rank
         if membership is not None:
             if auth.min_role.rank <= membership.role.rank:
+                log.debug('allowed')
                 return allowed
             else:
+                log.debug('not allowed')
                 return not_allowed
         else:
             # If the user isn't a member, check if it is open to nonmembers and user is registered.
             if not auth.min_role.org_member and user is not None:
+                log.debug('allowed')
                 return allowed
             else:
+                log.debug('not allowed')
                 return not_allowed
