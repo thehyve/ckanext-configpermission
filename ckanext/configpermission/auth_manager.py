@@ -97,7 +97,7 @@ class AuthManager(object):
                 log.debug('allowed')
                 return allowed
             else:
-                log.debug('not allowed')
+                log.debug('not allowed min role required: {}, user role: {}'.format(auth.min_role, membership.role))
                 return not_allowed
         else:
             # If the user isn't a member, check if it is open to nonmembers and user is registered.
@@ -105,5 +105,5 @@ class AuthManager(object):
                 log.debug('allowed')
                 return allowed
             else:
-                log.debug('not allowed')
+                log.debug('not allowed, membership required but not there.')
                 return not_allowed
