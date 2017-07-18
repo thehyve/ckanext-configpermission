@@ -7,9 +7,9 @@ $(document).ready(function() {
 
         var new_role = $('#role-form #new-role-input')[0].value;
 
-        $('#role-table tr:last').after(table_row_default.replace('ROLE_NAME_PLACEHOLDER', new_role))
+        $('#role-table tr:nth-last-child(3)').after(table_row_default.replace('ROLE_NAME_PLACEHOLDER', new_role))
         sortable_roles()
-        submit_roles('#role-form')
+        submit_roles('#role-table')
     });
 
     //Delete button in table rows
@@ -79,6 +79,7 @@ function submit_roles(tableID) {
         'error': function(error){console.log(error)},
         'method': 'POST',
     })
+    console.log('Submitting Roles:')
     console.log(table_data)
 }
 
