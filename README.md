@@ -47,6 +47,7 @@ To install ckanext-configpermission:
 
     paster --plugin=ckanext-configpermission defaultdata -c /etc/ckan/default/production.ini
 
+7. Configure Permission settings on the sysadmin page.
 
 ---------------
 Config Settings

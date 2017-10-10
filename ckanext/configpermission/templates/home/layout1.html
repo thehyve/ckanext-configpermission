@@ -33,9 +33,11 @@
                 {# End template block example. #}
             </div>
             <div class="span6 col2">
-                {% block featured_organization %}
-                {% snippet 'home/snippets/featured_organization.html' %}
-                {% endblock %}
+                {% if h.check_access('view_featured') %}
+                    {% block featured_organization %}
+                    {% snippet 'home/snippets/featured_organization.html' %}
+                    {% endblock %}
+                {% endif %}
             </div>
         </div>
     </div>
