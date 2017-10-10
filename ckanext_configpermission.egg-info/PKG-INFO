@@ -49,8 +49,7 @@ Description: .. You should enable this project on travis-ci.org and coveralls.io
         Requirements
         ------------
         
-        For example, you might want to mention here which versions of CKAN this
-        extension works with.
+        Tested on CKAN 2.5
         
         
         ------------
@@ -83,15 +82,18 @@ Description: .. You should enable this project on travis-ci.org and coveralls.io
         5. Run database init
            paster --plugin=ckanext-configpermission init -c /etc/ckan/default/production.ini
         
+        6. Create default data
+           paster --plugin=ckanext-configpermission defaultdata -c /etc/ckan/default/production.ini
+        
+        
         ---------------
         Config Settings
         ---------------
         
         Document any optional config settings here. For example::
         
-            # The minimum number of hours to wait before re-checking a resource
-            # (optional, default: 24).
-            ckanext.configpermission.some_setting = some_default_value
+           # Select the permissions to be managed in the ckan configuration file. Like so
+           ckan.configpermission.permissions = package_show member_delete group_create resource_update package_show resource_show
         
         
         ------------------------

@@ -75,14 +75,17 @@ class AuthManager(object):
 
         # If anonymous users can access, everyone can.
         if not auth.min_role.is_registered:
-            log.debug('allowed')
+            log.debug('{} allowed'.format(action))
             return allowed
+        elif user is None:
+            log.debug("{} action not allowed without user account")
+            return not_allowed
 
         owner_org = self._get_owner_org(context, data_dict, action)
 
         # If no org and no id set at all, data is visible.
         if owner_org is None and 'id' not in data_dict:
-            log.debug('allowed')
+            log.debug('{} allowed'.format(action))
             return allowed
         elif 'id' in data_dict:
             # Use ckan methods to check if user follows this object.
@@ -90,20 +93,21 @@ class AuthManager(object):
                 return auth_get._followee_list(context, data_dict)
 
         membership = auth_model.AuthMember.by_group_and_user_id(group_id=owner_org, user_id=user.id)
-
+        if action == 'view_promoted':
+            import pdb; pdb.set_trace()
         # If the user is a member of the org, check if he has the right rank
         if membership is not None:
             if auth.min_role.rank <= membership.role.rank:
-                log.debug('allowed')
+                log.debug('{} allowed'.format(action))
                 return allowed
             else:
-                log.debug('not allowed min role required: {}, user role: {}'.format(auth.min_role, membership.role))
+                log.debug('{} not allowed min role required: {}, user role: {}'.format(action, auth.min_role, membership.role))
                 return not_allowed
         else:
             # If the user isn't a member, check if it is open to nonmembers and user is registered.
             if not auth.min_role.org_member and user is not None:
-                log.debug('allowed')
+                log.debug('{} allowed'.format(action))
                 return allowed
             else:
-                log.debug('not allowed, membership required but not there.')
+                log.debug('{} not allowed, membership required but not there.'.format(action))
                 return not_allowed
