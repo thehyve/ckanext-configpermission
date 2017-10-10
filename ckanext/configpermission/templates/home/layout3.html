@@ -18,9 +18,11 @@
                 {% endif %}
             </div>
             <div class="span6 col1">
-                {% block stats %}
-                {% snippet 'home/snippets/stats.html' %}
-                {% endblock %}
+                {% if h.check_access('view_stats') %}
+                    {% block stats %}
+                    {% snippet 'home/snippets/stats.html' %}
+                    {% endblock %}
+                {% endif %}
             </div>
         </div>
     </div>

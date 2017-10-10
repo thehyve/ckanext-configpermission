@@ -7,9 +7,11 @@
                         {% snippet 'home/snippets/search.html' %}
                     {% endblock %}
                 {% endif %}
-                {% block stats %}
-                {% snippet 'home/snippets/stats.html' %}
-                {% endblock %}
+                {% if h.check_access('view_stats') %}
+                    {% block stats %}
+                    {% snippet 'home/snippets/stats.html' %}
+                    {% endblock %}
+                {% endif %}
             </div>
             <div class="span6 col2">
                 {% if h.check_access('view_promoted') %}
