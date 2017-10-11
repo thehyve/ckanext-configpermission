@@ -78,7 +78,7 @@ class AuthManager(object):
             log.debug('{} allowed'.format(action))
             return allowed
         elif user is None:
-            log.debug("{} action not allowed without user account")
+            log.debug("{} action not allowed without user account".format(action))
             return not_allowed
 
         owner_org = self._get_owner_org(context, data_dict, action)
