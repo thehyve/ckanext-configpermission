@@ -4,6 +4,7 @@ import ckan.plugins.toolkit as toolkit
 from ckanext.configpermission.auth_manager import AuthManager
 from ckanext.configpermission.logic.action.create import member_create
 from ckanext.configpermission.logic.action.get import member_roles_list
+from ckanext.configpermission.helpers import get_role
 
 
 controller_name = 'ckanext.configpermission.controller:PermissionController'
@@ -17,6 +18,7 @@ class ConfigpermissionPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IAuthFunctions)
     plugins.implements(plugins.IRoutes)
     plugins.implements(plugins.IActions)
+    plugins.implements(plugins.ITemplateHelpers)
 
     auth_manager = None
 
@@ -62,3 +64,14 @@ class ConfigpermissionPlugin(plugins.SingletonPlugin):
         # Overwrite the member_roles get function as well, so it returns the new roles
         return {'member_create': member_create,
                 'member_roles_list': member_roles_list}
+
+    #ITemplateHelpers
+    def get_helpers(self):
+        '''Register the most_popular_groups() function above as a template
+        helper function.
+
+        '''
+        # Template helper function names should begin with the name of the
+        # extension they belong to, to avoid clashing with functions from
+        # other extensions.
+        return {'get_role': get_role}

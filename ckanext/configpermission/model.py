@@ -70,6 +70,21 @@ class AuthRole(AuthNamedBase, Base):
     def __repr__(self):
         return "AuthRole(id={}, name={}, rank={}, org_member={})".format(self.id, self.name, self.rank, self.org_member)
 
+    @classmethod
+    def delete(cls, name):
+        role = cls.get(name)
+        if role == None:
+            raise NameError("Role not known")
+
+        lower_roles = [x for x in AuthRole.all() if x.rank < role.rank]
+        lower_roles.sort(key=lambda x: x.rank, reverse=True)
+        new_role = lower_roles[0]
+
+        for member in AuthMember.by_role_id(role.id):
+            member.role = new_role
+            member.save()
+        super(AuthRole, cls).delete(name)
+
 
 class AuthModel(AuthNamedBase, Base):
     """
@@ -104,6 +119,12 @@ class AuthMember(AuthBase, Base):
     def by_user_id(cls, user_id):
         query = meta.Session.query(cls).autoflush(False)
         query = query.filter(cls.user_id == user_id)
+        return query.all()
+
+    @classmethod
+    def by_role_id(cls, role_id):
+        query = meta.Session.query(cls).autoflush(False)
+        query = query.filter(cls.role_id == role_id)
         return query.all()
 
     @classmethod
