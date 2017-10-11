@@ -83,6 +83,11 @@ class AuthRole(AuthNamedBase, Base):
         for member in AuthMember.by_role_id(role.id):
             member.role = new_role
             member.save()
+
+        for model in AuthModel.all():
+            if model.min_role.id == role.id:
+                model.min_role = new_role
+                model.save()
         super(AuthRole, cls).delete(name)
 
 
