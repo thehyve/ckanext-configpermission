@@ -8,6 +8,7 @@ ckanext/configpermission/auth_manager.py
 ckanext/configpermission/controller.py
 ckanext/configpermission/default_permissions.py
 ckanext/configpermission/default_roles.py
+ckanext/configpermission/helpers.py
 ckanext/configpermission/model.py
 ckanext/configpermission/paster.py
 ckanext/configpermission/plugin.py
@@ -22,6 +23,9 @@ ckanext/configpermission/logic/action/create.py
 ckanext/configpermission/logic/action/get.py
 ckanext/configpermission/templates/configpermission/configpermission_management.html
 ckanext/configpermission/templates/home/layout1.html
+ckanext/configpermission/templates/home/layout2.html
+ckanext/configpermission/templates/home/layout3.html
+ckanext/configpermission/templates/organization/members.html
 ckanext/configpermission/tests/__init__.py
 ckanext/configpermission/tests/test_auth_manager.py
 ckanext/configpermission/tests/test_logic_action_create.py

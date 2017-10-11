@@ -3,7 +3,7 @@ import ckan.plugins.toolkit as toolkit
 
 from ckanext.configpermission.auth_manager import AuthManager
 from ckanext.configpermission.logic.action.create import member_create
-from ckanext.configpermission.logic.action.get import member_roles_list
+from ckanext.configpermission.logic.action.get import member_roles_list, organization_list_for_user
 from ckanext.configpermission.helpers import get_role
 
 
@@ -63,7 +63,8 @@ class ConfigpermissionPlugin(plugins.SingletonPlugin):
         # Overwrite the CKAN member_create function with our own, so we can hook into member creation.
         # Overwrite the member_roles get function as well, so it returns the new roles
         return {'member_create': member_create,
-                'member_roles_list': member_roles_list}
+                'member_roles_list': member_roles_list,
+                'organization_list_for_user': organization_list_for_user}
 
     #ITemplateHelpers
     def get_helpers(self):

@@ -90,6 +90,14 @@ class AuthRole(AuthNamedBase, Base):
                 model.save()
         super(AuthRole, cls).delete(name)
 
+    @classmethod
+    def get_role_with_permission(cls, permission_name):
+        model = AuthModel.get(permission_name)
+        if model is None:
+            return meta.Session.query(cls).all()
+        query = meta.Session.query(cls).autoflush(False)
+        query = query.filter(cls.rank >= model.min_role.rank)
+        return query.all()
 
 class AuthModel(AuthNamedBase, Base):
     """
