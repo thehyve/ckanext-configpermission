@@ -45,6 +45,8 @@ class AuthManager(object):
             owner_org = package.owner_org
         elif 'group' in context:
             owner_org = logic_auth.get_group_object(context, data_dict).id
+        elif 'owner_org' in data_dict:
+            owner_org = data_dict.get('owner_org')
 
         return owner_org
 
