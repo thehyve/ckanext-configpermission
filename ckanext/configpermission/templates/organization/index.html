@@ -1,8 +1,10 @@
 {% ckan_extends %}
 
+{% block organizations_search_form %}
+{% endblock %}
 
-{# {% block organizations_list %}
-    {% if h.check_access('organization_show') %}
+{% block organizations_list %}
+    {% if h.check_access('organization_overview', {}) %}
         {% if c.page.items or request.params %}
             {% if c.page.items %}
                 {% snippet "organization/snippets/organization_list.html", organizations=c.page.items %}
@@ -23,5 +25,5 @@
         {% endif %}
         </p>
     {% endif %}
-{% endblock %} #}
+{% endblock %}
 

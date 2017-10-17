@@ -95,7 +95,6 @@ class AuthManager(object):
                 return auth_get._followee_list(context, data_dict)
 
         membership = auth_model.AuthMember.by_group_and_user_id(group_id=owner_org, user_id=user.id)
-
         # If the user is a member of the org, check if he has the right rank
         if membership is not None:
             if auth.min_role.rank <= membership.role.rank:
