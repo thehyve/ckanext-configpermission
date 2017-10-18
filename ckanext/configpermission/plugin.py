@@ -4,6 +4,7 @@ import ckan.plugins.toolkit as toolkit
 from ckanext.configpermission.auth_manager import AuthManager
 from ckanext.configpermission.logic.action.create import member_create
 from ckanext.configpermission.logic.action.get import member_roles_list, organization_list_for_user
+from ckanext.configpermission.logic.action.delete import member_delete
 from ckanext.configpermission.helpers import get_role
 
 
@@ -64,6 +65,7 @@ class ConfigpermissionPlugin(plugins.SingletonPlugin):
         # Overwrite the member_roles get function as well, so it returns the new roles
         return {'member_create': member_create,
                 'member_roles_list': member_roles_list,
+                'member_delete': member_delete,
                 'organization_list_for_user': organization_list_for_user}
 
     #ITemplateHelpers

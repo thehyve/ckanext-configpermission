@@ -87,8 +87,17 @@ class AuthManager(object):
 
         # If no org and no id set at all, data is visible.
         if owner_org is None and 'id' not in data_dict:
-            log.debug('{} allowed'.format(action))
-            return allowed
+            if not auth.min_role.org_member:
+                log.debug('{} allowed'.format(action))
+                return allowed
+            else:
+                memberships = auth_model.AuthMember.by_user_id(user_id=user.id)
+                if len(memberships) > 0:
+                    log.debug('{} allowed'.format(action))
+                    return allowed
+                else:
+                    log.debug('{} not allowed, not a group member'.format(action))
+                    return not_allowed
         elif 'id' in data_dict:
             # Use ckan methods to check if user follows this object.
             if 'followee' in action:
