@@ -33,7 +33,7 @@ _text = sqlalchemy.text
 
 
 def member_roles_list(context, data_dict):
-    return [{'text': x.display_name, 'value': x.name} for x in AuthRole.all()]
+    return [{'text': x.display_name, 'value': x.name} for x in AuthRole.all() if x.org_member]
 
 
 def organization_list_for_user(context, data_dict):
