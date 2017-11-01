@@ -1,8 +1,13 @@
 from ckan import logic
-from ckan.common import _
 import ckan
 import ckan.lib.dictization.model_dictize as model_dictize
 from ckanext.configpermission.model import AuthMember, AuthRole
+
+
+import ckan.logic as logic
+
+import ckan.lib.plugins
+from ckan.common import _
 
 NotFound = logic.NotFound
 _get_or_bust = logic.get_or_bust
@@ -75,18 +80,20 @@ def member_create(context, data_dict=None):
 
     model.Session.add(member)
     model.repo.commit()
-
     # New code to add AuthMember objects
     if obj_type == 'user':
-        roles = [x for x in AuthRole.all() if x.org_member]
-        roles.sort(key=lambda x: x.rank)
-        lowest_role = roles[0]
+        role = AuthRole.get(data_dict.get('capacity', ''))
+        if role is None:
+            roles = [x for x in AuthRole.all() if x.org_member]
+            roles.sort(key=lambda x: x.rank)
+            lowest_role = roles[0]
+            role = lowest_role
 
         existing_member = AuthMember.by_group_and_user_id(group_id=group.id, user_id=obj.id)
         if not existing_member:
-            AuthMember.create(group_id=group.id, user_id=obj_id, role=lowest_role)
+            AuthMember.create(group_id=group.id, user_id=obj_id, role=role)
         else:
-            existing_member.role = lowest_role
+            existing_member.role = role
             existing_member.save()
 
     return model_dictize.member_dictize(member, context)
