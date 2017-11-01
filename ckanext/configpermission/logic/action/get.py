@@ -33,7 +33,7 @@ _text = sqlalchemy.text
 
 
 def member_roles_list(context, data_dict):
-    roles = [x for x in AuthRole.all() if x.org_member]
+    roles = [x for x in AuthRole.all() if (x.org_member and x.editable)]
     roles.sort(key=lambda x: x.rank, reverse=True)
     return [{'text': x.display_name, 'value': x.name} for x in roles]
 

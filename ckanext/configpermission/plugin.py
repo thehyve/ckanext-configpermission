@@ -6,7 +6,7 @@ from ckanext.configpermission.logic.action.create import member_create
 from ckanext.configpermission.logic.action.get import member_roles_list, organization_list_for_user
 from ckanext.configpermission.logic.action.delete import member_delete
 from ckanext.configpermission.logic.action.search import package_search
-from ckanext.configpermission.helpers import get_role
+from ckanext.configpermission.helpers import get_role, get_role_selected
 
 
 controller_name = 'ckanext.configpermission.controller:PermissionController'
@@ -79,4 +79,5 @@ class ConfigpermissionPlugin(plugins.SingletonPlugin):
         # Template helper function names should begin with the name of the
         # extension they belong to, to avoid clashing with functions from
         # other extensions.
-        return {'get_role': get_role}
+        return {'get_role': get_role,
+                'get_role_name': get_role_selected}

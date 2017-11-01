@@ -6,5 +6,9 @@ def get_role(user_id, group_id):
     member = AuthMember.by_group_and_user_id(group_id=group_id, user_id=user_id)
     if member is None or member.role is None:
         return 'N/A'
-
     return member.role.display_name
+
+
+def get_role_selected(user_id, group_id):
+    member = AuthMember.by_group_and_user_id(group_id=group_id, user_id=user_id)
+    return member.role.name
