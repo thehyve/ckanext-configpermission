@@ -5,6 +5,7 @@ from ckanext.configpermission.auth_manager import AuthManager
 from ckanext.configpermission.logic.action.create import member_create
 from ckanext.configpermission.logic.action.get import member_roles_list, organization_list_for_user
 from ckanext.configpermission.logic.action.delete import member_delete
+from ckanext.configpermission.logic.action.search import package_search
 from ckanext.configpermission.helpers import get_role
 
 
@@ -66,7 +67,8 @@ class ConfigpermissionPlugin(plugins.SingletonPlugin):
         return {'member_create': member_create,
                 'member_roles_list': member_roles_list,
                 'member_delete': member_delete,
-                'organization_list_for_user': organization_list_for_user}
+                'organization_list_for_user': organization_list_for_user,
+                'package_search': package_search}
 
     #ITemplateHelpers
     def get_helpers(self):

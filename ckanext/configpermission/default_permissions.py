@@ -137,6 +137,7 @@ default_permissions = [{'display_name': 'Create Group', 'name': 'group_create', 
                        {'display_name': 'View Frontpage Featured', 'name': 'view_featured', 'role': default_roles.ANON_USER},
                        {'display_name': 'View Frontpage Stats', 'name': 'view_stats', 'role': default_roles.ANON_USER},
                        {'display_name': 'Overview of all Organizations', 'name': 'organization_overview', 'role': default_roles.REG_USER},
+                       {'display_name': 'List all packages', 'name': 'list_packages', 'role': default_roles.ANON_USER},
                        ]
 
 selected_permissions = config.get('ckan.configpermission.permissions', '*').strip()
@@ -146,7 +147,7 @@ if selected_permissions == '*':
 else:
     # Turn comma separated string into a proper python list.
     selected_permissions = [x.strip() for x in selected_permissions.split(' ')]
-plugin_permissions = ['view_promoted', 'view_search', 'view_featured', 'view_stats', 'organization_overview']
+plugin_permissions = ['view_promoted', 'view_search', 'view_featured', 'view_stats', 'organization_overview', 'list_packages']
 selected_permissions += plugin_permissions
 # Get the permissions we selected.
 permissions = [x for x in default_permissions if x['name'] in selected_permissions]
