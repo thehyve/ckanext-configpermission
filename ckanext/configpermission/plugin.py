@@ -1,5 +1,6 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
+from ckan.logic import schema
 
 from ckanext.configpermission.auth_manager import AuthManager
 from ckanext.configpermission.logic.action.create import member_create
@@ -7,8 +8,9 @@ from ckanext.configpermission.logic.action.get import member_roles_list, organiz
 from ckanext.configpermission.logic.action.delete import member_delete
 from ckanext.configpermission.logic.action.search import package_search
 from ckanext.configpermission.helpers import get_role, get_role_selected
+from ckanext.configpermission.logic.schema import member_schema
 
-
+schema.member_schema = member_schema
 controller_name = 'ckanext.configpermission.controller:PermissionController'
 controller_view_action = 'management_view'
 controller_update_roles_action = 'update_roles'
