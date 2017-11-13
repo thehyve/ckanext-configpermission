@@ -1,6 +1,8 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from ckan.logic import schema
+from ckan import authz as ckan_authz
+
 
 from ckanext.configpermission.auth_manager import AuthManager
 from ckanext.configpermission.logic.action.create import member_create
@@ -42,6 +44,8 @@ class ConfigpermissionPlugin(plugins.SingletonPlugin):
         self.auth_manager = AuthManager(permissions)
         for permission in [x['name'] for x in permissions]:
             auth_data[permission] = getattr(self.auth_manager, permission)
+
+        ckan_authz.has_user_permission_for_group_or_org = self.auth_manager.has_user_permission_for_group_or_org
         return auth_data
 
     # IRoutes #

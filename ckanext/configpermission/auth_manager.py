@@ -1,6 +1,7 @@
 from ckanext.configpermission import model as auth_model
 from ckanext.configpermission import default_roles
 
+from ckan.authz import has_user_permission_for_group_or_org as ckan_has_user_permission_for_group_or_org
 from ckan import model as ckan_model
 from ckan.logic import auth as logic_auth
 from ckan.logic.auth import get as auth_get
@@ -120,3 +121,11 @@ class AuthManager(object):
             else:
                 log.debug('{} not allowed, membership required but not there.'.format(action))
                 return not_allowed
+
+    def has_user_permission_for_group_or_org(self, group_id, user_name, permission):
+        if permission in self.permissions:
+            context = {'user': user_name, 'owner_org': group_id}
+            data_dict = {}
+            return self.check_access(context, data_dict, action=permission)
+        else:
+            return ckan_has_user_permission_for_group_or_org(group_id, user_name, permission)

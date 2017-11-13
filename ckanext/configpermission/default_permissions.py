@@ -138,6 +138,9 @@ default_permissions = [{'display_name': 'Create Group', 'name': 'group_create', 
                        {'display_name': 'View Frontpage Stats', 'name': 'view_stats', 'role': default_roles.ANON_USER},
                        {'display_name': 'Overview of all Organizations', 'name': 'organization_overview', 'role': default_roles.REG_USER},
                        {'display_name': 'List all packages', 'name': 'list_packages', 'role': default_roles.ANON_USER},
+                       {'display_name': 'Create Dataset', 'name': 'create_dataset', 'role': default_roles.MEMBER},
+                       # TODO make this configurable via the ini files
+                       {'display_name': 'Show Private data', 'name': 'dataset_privacy', 'role': default_roles.MEMBER},
                        ]
 
 selected_permissions = config.get('ckan.configpermission.permissions', '*').strip()
