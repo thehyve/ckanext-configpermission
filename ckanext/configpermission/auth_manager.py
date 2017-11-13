@@ -41,13 +41,19 @@ class AuthManager(object):
             owner_org = resource.extras.get('owner_org', None)
             if owner_org is None:
                 owner_org = resource.package.owner_org
-        elif 'package' in context and 'package' in action:
-            package = context['package']
-            owner_org = package.owner_org
         elif 'group' in context:
             owner_org = logic_auth.get_group_object(context, data_dict).id
         elif 'owner_org' in data_dict:
             owner_org = data_dict.get('owner_org')
+        elif 'package' in context and 'package' in action:
+            package = context['package']
+            owner_org = package.owner_org
+        else:
+            package = logic_auth.get_package_object(context, data_dict)
+            if package is None:
+                owner_org = logic_auth.get_group_object(context, data_dict).id
+            else:
+                owner_org = package.owner_org
 
         return owner_org
 
@@ -103,6 +109,12 @@ class AuthManager(object):
             # Use ckan methods to check if user follows this object.
             if 'followee' in action:
                 return auth_get._followee_list(context, data_dict)
+
+        # 'Owned' packages can still be edited
+        if 'package' in context and 'package' in action:
+            package = context.get('package')
+            if package.creator_user_id == user.id:
+                return allowed
 
         membership = auth_model.AuthMember.by_group_and_user_id(group_id=owner_org, user_id=user.id)
         # If the user is a member of the org, check if he has the right rank
