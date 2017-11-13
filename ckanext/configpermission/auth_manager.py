@@ -3,7 +3,7 @@ from ckanext.configpermission import default_roles
 
 from ckan.authz import has_user_permission_for_group_or_org as ckan_has_user_permission_for_group_or_org
 from ckan import model as ckan_model
-from ckan.logic import auth as logic_auth
+from ckan.logic import auth as logic_auth, ValidationError, NotFound
 from ckan.logic.auth import get as auth_get
 
 from logging import getLogger
@@ -49,9 +49,16 @@ class AuthManager(object):
             package = context['package']
             owner_org = package.owner_org
         else:
-            package = logic_auth.get_package_object(context, data_dict)
+            try:
+                package = logic_auth.get_package_object(context, data_dict)
+            except (ValidationError, NotFound):
+                package = None
+
             if package is None:
-                owner_org = logic_auth.get_group_object(context, data_dict).id
+                try:
+                    owner_org = logic_auth.get_group_object(context, data_dict).id
+                except (ValidationError, NotFound):
+                    owner_org = None
             else:
                 owner_org = package.owner_org
 
