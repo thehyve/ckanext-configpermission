@@ -96,9 +96,6 @@ class AuthManager(object):
         # If anonymous users can access, everyone can.
         if not auth.min_role.is_registered:
             log.debug('{} allowed'.format(action))
-            if action == 'dataset_privacy_edit':
-                import pdb;
-                pdb.set_trace()
             return allowed
         elif user is None:
             log.debug("{} action not allowed without user account".format(action))
@@ -116,9 +113,6 @@ class AuthManager(object):
                 memberships = auth_model.AuthMember.by_user_id(user_id=user.id)
                 if len(memberships) > 0:
                     log.debug('{} allowed'.format(action))
-                    if action == 'dataset_privacy_edit':
-                        import pdb;
-                        pdb.set_trace()
                     return allowed
                 else:
                     log.debug('{} not allowed, not a group member'.format(action))
@@ -144,9 +138,6 @@ class AuthManager(object):
         if membership is not None:
             if auth.min_role.rank <= membership.role.rank:
                 log.debug('{} allowed'.format(action))
-                if action == 'dataset_privacy_edit':
-                    import pdb;
-                    pdb.set_trace()
                 return allowed
             else:
                 log.debug('{} not allowed min role required: {}, user role: {}'.format(action, auth.min_role, membership.role))
@@ -155,9 +146,6 @@ class AuthManager(object):
             # If the user isn't a member, check if it is open to nonmembers and user is registered.
             if not auth.min_role.org_member and user is not None:
                 log.debug('{} allowed'.format(action))
-                if action == 'dataset_privacy_edit':
-                    import pdb;
-                    pdb.set_trace()
                 return allowed
             else:
                 log.debug('{} not allowed, membership required but not there.'.format(action))
