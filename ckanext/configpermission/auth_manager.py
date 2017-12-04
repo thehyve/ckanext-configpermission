@@ -48,6 +48,9 @@ class AuthManager(object):
         elif 'package' in context and 'package' in action:
             package = context['package']
             owner_org = package.owner_org
+        elif 'org_data' in data_dict:
+            org_data = data_dict['org_data']
+            owner_org = org_data.get('id', None)
         else:
             try:
                 package = logic_auth.get_package_object(context, data_dict)
@@ -76,6 +79,7 @@ class AuthManager(object):
         :param action:
         :return:
         """
+
         # Done like this instead of as default value because python behaves weirdly when you do that.
         # See: https://python-guide-pt-br.readthedocs.io/en/latest/writing/gotchas/#mutable-default-arguments
         if data_dict is None:
@@ -92,6 +96,9 @@ class AuthManager(object):
         # If anonymous users can access, everyone can.
         if not auth.min_role.is_registered:
             log.debug('{} allowed'.format(action))
+            if action == 'dataset_privacy_edit':
+                import pdb;
+                pdb.set_trace()
             return allowed
         elif user is None:
             log.debug("{} action not allowed without user account".format(action))
@@ -103,11 +110,15 @@ class AuthManager(object):
         if owner_org is None and 'id' not in data_dict:
             if not auth.min_role.org_member:
                 log.debug('{} allowed'.format(action))
+
                 return allowed
             else:
                 memberships = auth_model.AuthMember.by_user_id(user_id=user.id)
                 if len(memberships) > 0:
                     log.debug('{} allowed'.format(action))
+                    if action == 'dataset_privacy_edit':
+                        import pdb;
+                        pdb.set_trace()
                     return allowed
                 else:
                     log.debug('{} not allowed, not a group member'.format(action))
@@ -122,12 +133,20 @@ class AuthManager(object):
             package = context.get('package')
             if package.creator_user_id == user.id:
                 return allowed
+        elif 'package' in data_dict:
+            package_dict = data_dict.get('package')
+            package_creator = package_dict.get('creator_user_id', None)
+            if package_creator == user.id:
+                return allowed
 
         membership = auth_model.AuthMember.by_group_and_user_id(group_id=owner_org, user_id=user.id)
         # If the user is a member of the org, check if he has the right rank
         if membership is not None:
             if auth.min_role.rank <= membership.role.rank:
                 log.debug('{} allowed'.format(action))
+                if action == 'dataset_privacy_edit':
+                    import pdb;
+                    pdb.set_trace()
                 return allowed
             else:
                 log.debug('{} not allowed min role required: {}, user role: {}'.format(action, auth.min_role, membership.role))
@@ -136,6 +155,9 @@ class AuthManager(object):
             # If the user isn't a member, check if it is open to nonmembers and user is registered.
             if not auth.min_role.org_member and user is not None:
                 log.debug('{} allowed'.format(action))
+                if action == 'dataset_privacy_edit':
+                    import pdb;
+                    pdb.set_trace()
                 return allowed
             else:
                 log.debug('{} not allowed, membership required but not there.'.format(action))

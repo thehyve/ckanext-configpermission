@@ -141,6 +141,7 @@ default_permissions = [{'display_name': 'Create Group', 'name': 'group_create', 
                        {'display_name': 'Create Dataset', 'name': 'create_dataset', 'role': default_roles.MEMBER},
                        # TODO make this configurable via the ini files
                        {'display_name': 'Show Private data', 'name': 'dataset_privacy', 'role': default_roles.MEMBER},
+                       {'display_name': 'Edit Privacy Settings', 'name': 'dataset_privacy_edit', 'role': default_roles.ADMIN},
                        ]
 
 selected_permissions = config.get('ckan.configpermission.permissions', '*').strip()
@@ -150,7 +151,8 @@ if selected_permissions == '*':
 else:
     # Turn comma separated string into a proper python list.
     selected_permissions = [x.strip() for x in selected_permissions.split(' ')]
-plugin_permissions = ['view_promoted', 'view_search', 'view_featured', 'view_stats', 'organization_overview', 'list_packages']
+plugin_permissions = ['view_promoted', 'view_search', 'view_featured', 'view_stats', 'organization_overview', 'list_packages',
+                      'dataset_privacy_edit', 'dataset_privacy']
 selected_permissions += plugin_permissions
 # Get the permissions we selected.
 permissions = [x for x in default_permissions if x['name'] in selected_permissions]
