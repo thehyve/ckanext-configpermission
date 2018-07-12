@@ -33,6 +33,7 @@ def get_role_selected(user_id, group_id):
 def get_package_count(c, organization):
     user = User.get(c.user)
     org = Group.get(organization['name'])
-
+    if user.sysadmin:
+        return organization.get('package_count', 0)
     return get_action('package_search')({'user_id': user.id, 'with_private': False, 'auth_user_obj': user},
                                         {'fq': 'owner_org:"{}"'.format(org.id), 'include_private': False}).get('count', 0)
