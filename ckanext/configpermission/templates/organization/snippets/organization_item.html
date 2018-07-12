@@ -1,0 +1,9 @@
+{% ckan_extends %}
+
+{% block datasets %}
+    {% if h.get_package_count(c, organization) %}
+        <strong class="count">{{ ungettext('{num} Dataset', '{num} Datasets', h.get_package_count(c, organization)).format(num=h.get_package_count(c, organization)) }}</strong>
+    {% else %}
+        <span class="count">{{ _('0 Datasets') }}</span>
+    {% endif %}
+{% endblock %}

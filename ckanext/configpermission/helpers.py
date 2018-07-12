@@ -1,5 +1,9 @@
 from ckanext.configpermission.model import AuthMember
+from ckan.model import User, Group
 from jinja2.runtime import Undefined
+from ckan import logic
+
+get_action = logic.get_action
 
 
 def get_role(user_id, group_id):
@@ -24,3 +28,11 @@ def get_role_selected(user_id, group_id):
         return ''
     else:
         return member.role.name
+
+
+def get_package_count(c, organization):
+    user = User.get(c.user)
+    org = Group.get(organization['name'])
+
+    return get_action('package_search')({'user_id': user.id, 'with_private': False, 'auth_user_obj': user},
+                                        {'fq': 'owner_org:"{}"'.format(org.id), 'include_private': False}).get('count', 0)
