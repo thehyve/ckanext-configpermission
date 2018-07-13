@@ -9,7 +9,7 @@ from ckanext.configpermission.logic.action.create import member_create
 from ckanext.configpermission.logic.action.get import member_roles_list, organization_list_for_user
 from ckanext.configpermission.logic.action.delete import member_delete
 from ckanext.configpermission.logic.action.search import package_search
-from ckanext.configpermission.helpers import get_role, get_role_selected, get_package_count, get_site_extra_statistics, get_resource_count
+from ckanext.configpermission.helpers import get_role, get_role_selected, get_package_count, get_site_extra_statistics, get_resource_count, get_asset_count, get_org_count
 from ckanext.configpermission.logic.schema import member_schema
 
 schema.member_schema = member_schema
@@ -89,4 +89,7 @@ class ConfigpermissionPlugin(plugins.SingletonPlugin):
                 'get_role_name': get_role_selected,
                 'get_package_count': get_package_count,
                 'get_site_extra_statistics': get_site_extra_statistics,
-                'get_resource_count': get_resource_count}
+                'get_resource_count': get_resource_count,
+                'get_asset_count': get_asset_count,
+                'get_org_count': get_org_count,
+                }

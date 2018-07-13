@@ -47,6 +47,22 @@ def get_resource_count():
     return total
 
 
+def get_asset_count():
+    stats = get_site_extra_statistics()
+    total = 0
+    for org, data in stats.iteritems():
+        total += data[0]
+    return total
+
+
+def get_org_count():
+    stats = get_site_extra_statistics()
+    total = 0
+    for org, data in stats.iteritems():
+        total += 1
+    return total
+
+
 def get_site_extra_statistics():
     orgs = Group.all("organization")
     org_data = {}
