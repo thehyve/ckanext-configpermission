@@ -1,0 +1,37 @@
+{% set stats = h.get_site_statistics() %}
+{% set vis_stats = h.get_site_extra_statistics() %}
+
+<div class="box stats">
+  <div class="inner">
+    <h3>{{ _('{0} statistics').format(g.site_title) }} TEST</h3>
+    <ul>
+      {% block stats_group %}
+      <li>
+        <a href="{{ h.url_for(controller='package', action='search') }}">
+            Total no. of assets:
+          <strong>{{ h.SI_number_span(stats.dataset_count) }}</strong>
+            <strong>({{ h.get_resource_count() }})</strong>
+        </a>
+      </li>
+      <li>
+        <a href="{{ h.url_for(controller='organization', action='index') }}">
+          <strong>{{ h.SI_number_span(stats.organization_count) }}</strong>
+          {{ _('visibility') if stats.organization_count == 1 else _('visibilities') }}
+        </a>
+      </li>
+      {% endblock %}
+    </ul>
+    <table>
+        <tbody>
+        {% for org in vis_stats %}
+            <tr>
+                <td style="padding:5px">{{org}}</td>
+                <td style="padding:5px"><strong>{{ "{}({})".format(vis_stats[org][0], vis_stats[org][1])}}</strong></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+      <p>Note, based on your access right you will see different (meta)data while browsing.</p>
+  </div>
+</div>
