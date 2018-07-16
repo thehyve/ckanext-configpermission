@@ -1,5 +1,5 @@
 from ckanext.configpermission.model import AuthMember
-from ckan.model import User, Group, Resource
+from ckan.model import User, Group, Resource, Package, meta
 from jinja2.runtime import Undefined
 from ckan import logic
 
@@ -35,8 +35,8 @@ def get_package_count(c, organization):
     org = Group.get(organization['name'])
     if user.sysadmin:
         return organization.get('package_count', 0)
-    return get_action('package_search')({'user_id': user.id, 'with_private': False, 'auth_user_obj': user},
-                                        {'fq': 'owner_org:"{}"'.format(org.id), 'include_private': False}).get('count', 0)
+    return get_action('package_search')({'user_id': user.id, 'auth_user_obj': user},
+                                        {'fq': 'owner_org:"{}"'.format(org.id)}).get('count', 0)
 
 
 def get_resource_count():
@@ -66,9 +66,11 @@ def get_org_count():
 def get_site_extra_statistics():
     orgs = Group.all("organization")
     org_data = {}
+    all_assets = list(meta.Session.query(Package).all())
     for org in orgs:
         org_data[org.display_name] = {}
-        assets = org.packages()
+        assets = [x for x in all_assets if (x.owner_org == org.id) and (x.state == 'active')]
+
         asset_count = 0
         resource_count = 0
         for asset in assets:
