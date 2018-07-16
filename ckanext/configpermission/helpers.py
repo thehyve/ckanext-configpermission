@@ -32,11 +32,13 @@ def get_role_selected(user_id, group_id):
 
 def get_package_count(c, organization):
     user = User.get(c.user)
-    org = Group.get(organization['name'])
-    if user.sysadmin:
-        return organization.get('package_count', 0)
-    return get_action('package_search')({'user_id': user.id, 'auth_user_obj': user},
-                                        {'fq': 'owner_org:"{}"'.format(org.id)}).get('count', 0)
+
+    member = AuthMember.by_group_and_user_id(group_id=organization['id'], user_id=user.id)
+
+    if (member is None or member.role is None) and not user.sysadmin:
+        return meta.Session.query(Package).filter_by(owner_org=organization['id'], state='active', private=False).count()
+    else:
+        return meta.Session.query(Package).filter_by(owner_org=organization['id'], state='active').count()
 
 
 def get_resource_count():
@@ -69,8 +71,8 @@ def get_site_extra_statistics():
     all_assets = list(meta.Session.query(Package).all())
     for org in orgs:
         org_data[org.display_name] = {}
-        assets = [x for x in all_assets if (x.owner_org == org.id) and (x.state == 'active')]
-
+        # assets = [x for x in all_assets if (x.owner_org == org.id) and (x.state == 'active')]
+        assets = meta.Session.query(Package).filter_by(owner_org=org.id, state='active').all()
         asset_count = 0
         resource_count = 0
         for asset in assets:
