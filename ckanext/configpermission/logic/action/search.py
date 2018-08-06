@@ -2,6 +2,8 @@ from ckan.logic.action.get import package_search as ckan_package_search
 import ckan.model as ckan_model
 from ckanext.configpermission.model import AuthMember
 from ckan.lib import helpers as h
+from logging import getLogger
+log = getLogger(__name__)
 
 
 def package_search(context, data_dict):
@@ -11,7 +13,7 @@ def package_search(context, data_dict):
         if user is not None:
             context['ignore_capacity_check'] = True
             if user.sysadmin:
-                data_dict['fq'] = ' +capacity:("private" OR "public")'
+                data_dict['fq'] += ' +capacity:("private" OR "public")'
             else:
                 memberships = AuthMember.by_user_id(user.id)
                 org_names = [ckan_model.Group.get(x.group_id).name for x in memberships if x.role.org_member == True]
@@ -20,7 +22,7 @@ def package_search(context, data_dict):
 
                 filters = " ".join(org_filters)
                 data_dict['fq'] += '(capacity:"public" {})'.format(filters)
-
+        log.debug("User fq: {}".format(data_dict['fq']))
         results = ckan_package_search(context=context, data_dict=data_dict)
     else:
         results = {}
