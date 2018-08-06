@@ -9,7 +9,6 @@
         <a href="{{ h.url_for(controller='package', action='search') }}">
             Total no. of assets & resources:
           <strong>{{ h.SI_number_span(h.get_asset_count()) }}</strong>
-            <strong>({{ h.get_resource_count() }})</strong>
         </a>
       </li>
       <li>
@@ -24,14 +23,14 @@
         <thead>
             <tr>
                 <td>Visbility</td>
-                <td>Assets (Resources)</td>
+                <td>Assets</td>
             </tr>
         </thead>
         <tbody>
         {% for org in vis_stats %}
             <tr>
                 <td style="padding:5px">{{org}}</td>
-                <td style="padding:5px"><strong>{{ "{}({})".format(vis_stats[org][0], vis_stats[org][1])}}</strong></td>
+                <td style="padding:5px"><strong>{{ "{}".format(vis_stats[org][0])}}</strong></td>
             </tr>
         {% endfor %}
         </tbody>
