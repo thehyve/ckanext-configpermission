@@ -1,41 +1,42 @@
 {% set vis_stats = h.get_site_extra_statistics() %}
 
 <div class="box stats">
-  <div class="inner">
-    <h3>{{ _('{0} statistics').format(g.site_title) }} TEST</h3>
-    <ul>
-      {% block stats_group %}
-      <li style="width:100%">
-        <a href="{{ h.url_for(controller='package', action='search') }}">
-            Total number of digital assets under the EBOLA + program
-          <strong>{{ h.SI_number_span(h.get_asset_count()) }}</strong>
-        </a>
-      </li>
-      <li>
-        <a href="{{ h.url_for(controller='organization', action='index') }}">
-          <strong>{{ h.SI_number_span(h.get_org_count()) }}</strong>
-          {{ _('visibility') if h.get_org_count() == 1 else _('visibilities') }}
-        </a>
-      </li>
-      {% endblock %}
-    </ul>
-    <table>
-        <thead>
+    <div class="inner">
+        <h3>{{ _('{0} statistics').format(g.site_title) }} TEST</h3>
+        <ul>
+            {% block stats_group %}
+            <li>
+                <a href="{{ h.url_for(controller='organization', action='index') }}">
+                    <strong>{{ h.SI_number_span(h.get_org_count()) }}</strong>
+                    {{ _('visibility') if h.get_org_count() == 1 else _('visibilities') }}
+                </a>
+            </li>
+
+            <li style="width:100%">
+                <a href="{{ h.url_for(controller='package', action='search') }}">
+                    Total number of digital assets under the EBOLA + program
+                    <strong>{{ h.SI_number_span(h.get_asset_count()) }}</strong>
+                </a>
+            </li>
+            {% endblock %}
+        </ul>
+        <table>
+            <thead>
             <tr>
                 <td>Visbility</td>
                 <td>Assets</td>
             </tr>
-        </thead>
-        <tbody>
-        {% for org in vis_stats %}
-            <tr>
+            </thead>
+            <tbody>
+            {% for org in vis_stats %}
+            <tr style="font-size:16px">
                 <td style="padding:5px">{{org}}</td>
                 <td style="padding:5px"><strong>{{ "{}".format(vis_stats[org][0])}}</strong></td>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            {% endfor %}
+            </tbody>
+        </table>
 
-      <p>NOTE: based on your access rights to visibilities you will see different numbers of assets while browsing</p>
-  </div>
+        <p style="font-size:12px">NOTE: based on your access rights to visibilities you will see different numbers of assets while browsing</p>
+    </div>
 </div>
