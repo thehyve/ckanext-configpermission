@@ -7,11 +7,25 @@ log = getLogger(__name__)
 
 
 def package_search(context, data_dict):
-    # import pdb; pdb.set_trace()
+    log.debug("context: {}".format(context))
+    log.debug("data_dict: {}".format(data_dict))
+
+    user = context.get('auth_user_obj', None)
+    if user is None:
+        user_name = context.get('user', '')
+        user = ckan_model.User.get(user_name)
+
     if h.check_access('list_packages', data_dict=data_dict):
-        user = context.get('auth_user_obj', None)
         if user is not None:
             context['ignore_capacity_check'] = True
+
+            if data_dict.get('q', '') != '':
+                q_split = data_dict['q'].split(' ')
+
+                query = " ".join([x for x in q_split if ':' not in x])
+                rest = " ".join([x for x in q_split if ':' in x])
+                data_dict['fq'] += rest
+                data_dict['q'] = query
             if user.sysadmin:
                 data_dict['fq'] += ' +capacity:("private" OR "public")'
             else:
@@ -22,6 +36,7 @@ def package_search(context, data_dict):
 
                 filters = " ".join(org_filters)
                 data_dict['fq'] += '(capacity:"public" {})'.format(filters)
+
         log.debug("User fq: {}".format(data_dict['fq']))
         results = ckan_package_search(context=context, data_dict=data_dict)
     else:
