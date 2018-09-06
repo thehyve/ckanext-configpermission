@@ -6,16 +6,16 @@
         <ul>
             {% block stats_group %}
             <li style="width:100%">
-                <a href="{{ h.url_for(controller='package', action='search') }}">
+                <p>
                     Total number of digital assets under the EBOLA + program
                     <strong>{{ h.SI_number_span(h.get_asset_count()) }}</strong>
-                </a>
+                </p>
             </li>
             <li>
-                <a href="{{ h.url_for(controller='organization', action='index') }}">
+                <p>
                     <strong>{{ h.SI_number_span(h.get_org_count()) }}</strong>
                     {{ _('visibility') if h.get_org_count() == 1 else _('visibilities') }}
-                </a>
+                </p>
             </li>
             {% endblock %}
         </ul>
