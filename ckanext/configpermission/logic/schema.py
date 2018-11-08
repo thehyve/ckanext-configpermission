@@ -1,5 +1,6 @@
 from ckanext.configpermission.logic.validators import role_exists
-from ckan.logic.validators import not_missing, group_id_or_name_exists, user_id_or_name_exists
+from ckan.logic.validators import group_id_or_name_exists, user_id_or_name_exists
+from ckan.lib.navl.validators import not_missing
 
 
 def member_schema():
