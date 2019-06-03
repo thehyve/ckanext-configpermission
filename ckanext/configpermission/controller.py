@@ -20,10 +20,12 @@ class PermissionController(BaseController):
         user_name = request.remote_user
 
         if user_name is None:
-            return abort(404, _('No user logged in'))
+            return abort(401, _('No user logged in'))
         user = ckan_model.User.get(user_name)
-        if user is None or not user.sysadmin:
-            return abort(404, _('Only sysadmin can do this'))
+        if user is None:
+            return abort(401, _('Only logged in sysadmin can do this'))
+        if not user.sysadmin:
+            return abort(403, _('Only sysadmin can do this'))
 
     def management_view(self):
         self.check_sysadmin()
